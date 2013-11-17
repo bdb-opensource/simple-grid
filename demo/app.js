@@ -42,13 +42,8 @@
             $scope.gridConfigEmpty = { options: $scope.gridConfig.options, rows: [] };
             
             // utility stuff
-            $scope.hideDeleted = function (rows) {
-                var i;
-                for (i = 0; i < rows.length; i += 1) {
-                    if (rows[i].$deleted) {
-                        rows.splice(i, 1);
-                    }
-                }
+            $scope.filterDeleted = function (rows) {
+                return rows.filter(function (row) { return !row.$deleted; });
             };
             
             $scope.pretty = function (obj) {
