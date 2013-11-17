@@ -1,0 +1,20 @@
+{
+  "name": "simple-grid",
+  "version": "0.1.0",
+  "description": "A simple grid (editable table) for AngularJS",
+  "keywords": [
+    "angular"
+  ],
+  "authors": [
+    "Noam Lewis"
+  ],
+  "license": "MIT",
+  "homepage": "http://sinelaw.github.io/simple-grid/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
