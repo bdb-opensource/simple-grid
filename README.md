@@ -15,7 +15,13 @@ Why another grid?
 
 ## Quick start
 
-Add these to your `html`:
+### Get the files. 
+
+Either by cloning this git, or using bower:
+
+    bower install angular-simple-grid
+
+### Add them to your `html`.
 
 Template:
 
@@ -31,7 +37,7 @@ CSS (optional):
     <link rel="stylesheet" href="path/to/simple-grid.css" />
 
 
-Then, somewhere in your angular app:
+### Then, somewhere in your angular app:
 
 View:
 
@@ -55,6 +61,7 @@ Controller:
     }
     ...
 
+All set!
 
 ## Options Reference
 
