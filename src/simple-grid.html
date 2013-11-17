@@ -1,17 +1,20 @@
 <table class="table table-striped simple-grid"> 
     <thead>                 
         <tr>                
-            <th ng-repeat="column in simpleGrid.columns">{{column.title || capitalize(column.field)}}</th>  
+            <th ng-repeat="column in simpleGrid.options.columns">{{column.title || capitalize(column.field)}}</th>  
             <th ng-if="simpleGrid.options.showDelete"></th> 
         </tr>               
     </thead>                
-    <tbody>                 
+    <tbody>      
+        <tr ng-if="!simpleGrid.rows.length">
+            <td colspan="0"><em>No items</em></td>
+        </tr>
         <tr ng-repeat="row in simpleGrid.rows" 
             ng-form="simpleGrid{{gridNum}}Row{{$index}}"
             ng-class="{deleted: row.$deleted}"> 
-            <td ng-repeat="column in simpleGrid.columns">   
+            <td ng-repeat="column in simpleGrid.options.columns">   
                 <input ng-if="column.inputType !== 'select'"  class="form-control"   
-                       type="column.inputType"                  
+                       type="column.inputType || 'text'"                  
                        ng-model="row[column.field]"             
                        ng-required="column.required"            
                        placeholder="{{column.placeholder}}"
@@ -24,10 +27,10 @@
                         ng-disabled="column.disabled || row.$deleted || simpleGrid.disabled"           
                         ng-options="option.value as option.title for option in column.options"/>           
             </td>   
-            <td ng-if="simpleGrid.options.showDelete">          
-                <button type="button" class="btn btn-small"     
+            <td ng-if="simpleGrid.options.showDelete" class="sg-actions-cell">          
+                <button type="button" class="btn"     
                         ng-class="{'btn-danger': !row.$deleted }"  
-                       ng-click="markDeleted(row)"             
+                        ng-click="markDeleted(row)"             
                         ng-disabled="column.disabled || row.$deleted || simpleGrid.disabled"   
                         >   
                     <i class="glyphicon glyphicon-trash"></i></button> 

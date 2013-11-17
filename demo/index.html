@@ -19,10 +19,21 @@
 
     <h1>Demo for simple-grid directive</h1>
     <div ng-controller="MainCtrl">
-        <p>Config:
-            <pre class="pre-scrollable">{{pretty(gridConfig)}}</pre>
+        <p>
+            Grid options used in this demo:
+            <pre class="pre-scrollable" style="max-height: 200px">{{pretty(gridConfig.options)}}</pre>
         </p>
+
+        <h2>Prepopulated:</h2>
         <div simple-grid="gridConfig"></div>
+
+        <h2>Empty:</h2>
+        <div class="btn-group">
+            <button type="button" class="btn btn-sm btn-success" ng-click="gridConfigEmpty.rows.push({})">Add row</button>
+            <button type="button" class="btn btn-sm btn-danger" ng-click="hideDeleted(gridConfigEmpty.rows)">Remove deleted rows</button>
+        </div>
+        <div simple-grid="gridConfigEmpty"></div>
+
     </div>
     <script src="bower_components/angular/angular.js"></script>
     <script src="../src/simple-grid.js"></script>

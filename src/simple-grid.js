@@ -1,4 +1,4 @@
-/*global $: false, angular: false */
+/*global document: false, angular: false */
 (function () {
     'use strict';
 
@@ -18,8 +18,8 @@
                     };
                     scope.markDeleted = function (row) {
                         row.$deleted = true;
-                        if (scope.simpleGrid.callbacks && scope.simpleGrid.callbacks.deleted) {
-                            scope.simpleGrid.callbacks.deleted(row);
+                        if (scope.simpleGrid.options && scope.simpleGrid.options.deleted) {
+                            scope.simpleGrid.options.deleted(row);
                         }
                     };
                     scope.isInvalid = function (rowIndex) {

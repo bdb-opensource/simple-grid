@@ -1,7 +1,13 @@
-table.simple-grid > tbody > tr > td > input, 
-table.simple-grid > tbody > tr > td > select {
+table.simple-grid > tbody > tr > td > select 
+{
+    background-color: transparent;
+}
+table.simple-grid > tbody > tr > td > input
+/*, table.simple-grid > tbody > tr > td > select */
+
+{
     border: none;
-    background-color:transparent;
+    background-color: transparent;
     box-shadow: none;
     padding-left: 7px;
     padding-right: 7px;
@@ -9,23 +15,28 @@ table.simple-grid > tbody > tr > td > select {
 table.simple-grid > tbody > tr > td .ng-invalid {
     background-color: #fcc !important;
 }
-/*
 table.simple-grid > tbody > tr > td > input:focus, 
-table.simple-grid > tbody > tr > td > select:focus,
+table.simple-grid > tbody > tr > td > input:hover
+/*
+,table.simple-grid > tbody > tr > td > select:focus
+,table.simple-grid > tbody > tr > td > select:hover 
 */
-table.simple-grid > tbody > tr > td > input:hover, 
-table.simple-grid > tbody > tr > td > select:hover {
+
+{
     border: 1px solid #ccc;
     padding-left: 6px;
     padding-right: 6px;
-    background-color:white;
+    transition: none;
+}
+table.simple-grid > tbody > tr > td > select:focus
+,table.simple-grid > tbody > tr > td > input:focus {
+    background-color: white;
 }
 table.simple-grid > tbody > tr.deleted,
-table.simple-grid > tbody > tr.deleted > td
-{
+table.simple-grid > tbody > tr.deleted > td {
     background-color: #ddd !important;
 }
 table.simple-grid > tbody > tr.deleted > td > * {
     color: #888;
-    text-decoration:line-through;
+    text-decoration: line-through;
 }
