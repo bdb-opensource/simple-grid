@@ -40,6 +40,25 @@ Controller:
 
     ...
     $scope.myGridConfig = {
+        // 'rows' should point to your data
+        rows: [{ age: 3, name: 'star' }, 
+               { age: 2, name: 'sparky' }], 
+               
+        options: { 
+            showDelete: true,
+            columns: [{ field: 'age', inputType: 'number' }, 
+                      { field: 'name' }]
+        }
+    }
+    ...
+
+
+## Options Reference
+
+Hopefully up-to-date in respect to the source.
+
+
+    $scope.myGridConfig = {
         rows: [{ age: 3 }, { age: 5 }], // should point to your data
         options: {
             columns: [
