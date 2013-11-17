@@ -36,6 +36,12 @@ CSS (optional):
 
     <link rel="stylesheet" href="path/to/simple-grid.css" />
 
+### Add the dependency `simpleGrid`
+
+...to your angular module:
+
+    angular.module('myApp', ['simpleGrid'])
+
 
 ### Then, somewhere in your angular app:
 
