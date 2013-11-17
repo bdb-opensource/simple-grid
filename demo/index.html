@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>simple-grid demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="../src/simple-grid.css" />
+</head>
+
+<body ng-app="demo" class="container">
+    <h1>Demo for simple-grid directive</h1>
+    <div ng-controller="MainCtrl">
+        <p>Config: {{gridConfig}}
+        </p>
+        <div simple-grid="gridConfig"></div>
+    </div>
+    <script type="text/ng-template" id="simple-grid.html" src="../src/simple-grid.html"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="../src/simple-grid.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

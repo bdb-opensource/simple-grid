@@ -1,0 +1,23 @@
+table.simple-grid > tbody > tr > td > input, 
+table.simple-grid > tbody > tr > td > select {
+    width:auto;
+    border: none;
+    background-color:transparent;
+    box-shadow: none;
+}
+table.simple-grid > tbody > tr > td > input:focus, 
+table.simple-grid > tbody > tr > td > select:focus,
+table.simple-grid > tbody > tr > td > input:hover, 
+table.simple-grid > tbody > tr > td > select:hover {
+    /*border: 1px solid #eee;*/
+    background-color:white;
+}
+table.simple-grid > tbody > tr.deleted,
+table.simple-grid > tbody > tr.deleted > td
+{
+    background-color: #ddd !important;
+}
+table.simple-grid > tbody > tr.deleted > td > * {
+    color: #888;
+    text-decoration:line-through;
+}
