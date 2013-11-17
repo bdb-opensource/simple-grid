@@ -30,7 +30,7 @@
         <h2>Empty:</h2>
         <div class="btn-group">
             <button type="button" class="btn btn-sm btn-success" ng-click="gridConfigEmpty.rows.push({})">Add row</button>
-            <button type="button" class="btn btn-sm btn-danger" ng-click="hideDeleted(gridConfigEmpty.rows)">Remove deleted rows</button>
+            <button type="button" class="btn btn-sm btn-danger" ng-click="gridConfigEmpty.rows=filterDeleted(gridConfigEmpty.rows)">Remove deleted rows</button>
         </div>
         <div simple-grid="gridConfigEmpty"></div>
 
