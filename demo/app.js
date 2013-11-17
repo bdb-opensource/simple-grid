@@ -1,4 +1,4 @@
-/*global angular:false */
+/*global console:false, angular:false */
 (function () {
     'use strict';
 
@@ -8,6 +8,10 @@
             $scope.gridConfig = {
                 options: {
                     showDelete: true
+                },
+                callbacks: {
+                    deleted: function (row) { console.log('deleted:', row); },
+                    focused: function (row, column) { console.log('focused:', row, column); }
                 },
                 columns: [
                     {

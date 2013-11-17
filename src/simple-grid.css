@@ -6,6 +6,9 @@ table.simple-grid > tbody > tr > td > select {
     padding-left: 7px;
     padding-right: 7px;
 }
+table.simple-grid > tbody > tr > td .ng-invalid {
+    background-color: #fcc !important;
+}
 /*
 table.simple-grid > tbody > tr > td > input:focus, 
 table.simple-grid > tbody > tr > td > select:focus,
