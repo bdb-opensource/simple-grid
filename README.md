@@ -10,6 +10,9 @@ Why another grid?
 * Easy to customize - use css with angular's form classes (`ng-invalid`, etc.) - or just copy & change the template html from the source.
 
 
+### [The Demo.](http://sinelaw.github.io/simple-grid/demo/index.html) Click it.
+
+
 ## Quick start
 
 Add these to your `html`:
