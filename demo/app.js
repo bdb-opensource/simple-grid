@@ -21,12 +21,20 @@
                         inputType: 'number',
                         required: false,
                         enabled: true
+                    },
+                    {
+                        field: 'sex',
+                        inputType: 'select',
+                        options: [{ value: 0, title: 'Male'}, { value: 1, title: 'Female'}],
+                        required: false,
+                        enabled: true
                     }
                 ],
-                rows: [ { name: 'joe', age: 1 },
+                rows: [ { name: 'joe', age: 1, sex: 1 },
                         { name: 'schmo', age: 100 }
                       ]
             };
+            $scope.pretty = function (obj) { return JSON.stringify(obj, undefined, '    '); };
         });
 
 }());

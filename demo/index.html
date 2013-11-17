@@ -14,13 +14,16 @@
 </head>
 
 <body ng-app="demo" class="container">
+
+    <script type="text/ng-template" id="simple-grid.html" src="../src/simple-grid.html"></script>
+
     <h1>Demo for simple-grid directive</h1>
     <div ng-controller="MainCtrl">
-        <p>Config: {{gridConfig}}
+        <p>Config:
+            <pre class="pre-scrollable">{{pretty(gridConfig)}}</pre>
         </p>
         <div simple-grid="gridConfig"></div>
     </div>
-    <script type="text/ng-template" id="simple-grid.html" src="../src/simple-grid.html"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="../src/simple-grid.js"></script>
     <script src="app.js"></script>
