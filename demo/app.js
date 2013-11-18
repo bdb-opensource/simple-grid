@@ -8,8 +8,8 @@
             $scope.gridConfig = {
                 options: {
                     showDelete: true,
-                    deleted: function (row) { console.log('deleted:', row); },
-                    focused: function (row, column) { console.log('focused:', row, column); },
+                    rowDeleted: function (row) { console.log('deleted:', row); },
+                    cellFocused: function (row, column) { console.log('focused:', row, column); },
                     columns: [
                         {
                             field: 'name',
