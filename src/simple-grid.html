@@ -15,7 +15,7 @@
 
             <td ng-repeat="column in simpleGrid.options.columns">
                 <input ng-if="column.inputType !== 'select'"  class="form-control"
-                       type="column.inputType || 'text'"
+                       type="{{ column.inputType || 'text' }}"
                        ng-model="row[column.field]"
                        ng-required="column.required"
                        placeholder="{{column.placeholder}}"
