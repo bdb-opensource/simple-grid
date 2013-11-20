@@ -39,8 +39,17 @@
 
         </td>
 
-        <td ng-if="simpleGrid.options.showDelete" class="sg-actions-cell">
+        <td ng-if="simpleGrid.options.showDelete || simpleGrid.options.showEdit" class="sg-actions-cell">
             <button type="button" class="btn btn-sm btn-small sg-column-{{simpleGrid.options.columns.length}}"
+                    ng-if="simpleGrid.options.showEdit"
+                    ng-click="editRequested(row)"
+                    ng-focus="cellFocused(row, null)"
+                    ng-keydown="keydown($event, $parent.$index, simpleGrid.options.columns.length)"
+                    ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"
+                    >
+                <i class="glyphicon glyphicon-pencil icon-pencil"></i></button>
+            <button type="button" class="btn btn-sm btn-small sg-column-{{simpleGrid.options.columns.length}}"
+                    ng-if="simpleGrid.options.showDelete"
                     ng-class="{'btn-danger': !row.$deleted }"
                     ng-click="markDeleted(row)"
                     ng-focus="cellFocused(row, null)"

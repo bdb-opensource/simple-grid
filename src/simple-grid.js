@@ -25,6 +25,12 @@
                         }
                     };
 
+                    scope.editRequested = function(row) {
+                        if (scope.simpleGrid.options.editRequested) {
+                            scope.simpleGrid.options.editRequested(row);
+                        }
+                    };
+
                     scope.isInvalid = function (rowIndex) {
                         var formCtrl = scope.$eval(scope.formName(rowIndex));
                         return formCtrl.$error;

@@ -8,8 +8,11 @@
             $scope.gridConfig = {
                 options: {
                     showDelete: true,
+                    showEdit: true,
+                    editRequested: function(row) { console.log('edit request:', row); },
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
+                    disabled: false,
                     columns: [
                         {
                             field: 'name',
@@ -42,7 +45,7 @@
             // an empty grid: same options, no data.
             $scope.emptyData = [];
             $scope.gridConfigEmpty = { options: $scope.gridConfig.options, getData: function () { return $scope.emptyData; } };
-            
+
             // utility stuff
             $scope.filterDeleted = function (rows) {
                 // TODO: Exteremly inefficient...
