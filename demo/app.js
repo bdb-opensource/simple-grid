@@ -12,6 +12,7 @@
                     editRequested: function(row) { console.log('edit request:', row); },
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
+                    editableInline: false,
                     disabled: false,
                     columns: [
                         {

@@ -15,10 +15,10 @@
         ng-class="{deleted: row.$deleted, selected: selectedRow===row}">
 
         <td ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell">
-                <span ng-if="simpleGrid.options.disabled">
+                <span ng-if="!simpleGrid.options.editableInline">
                     {{row[column.field]}}
                 </span>
-            <input ng-if="!simpleGrid.options.disabled && (column.inputType !== 'select')" 
+            <input ng-if="simpleGrid.options.editableInline && (column.inputType !== 'select')"
                    class="form-control sg-column-{{$index}}"
                    type="{{ column.inputType || 'text' }}"
                    ng-model="row[column.field]"
@@ -28,7 +28,7 @@
                    ng-keydown="keydown($event, $parent.$parent.$index, $index)"
                    ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"/>
 
-            <select ng-if="!simpleGrid.options.disabled && (column.inputType === 'select')" 
+            <select ng-if="simpleGrid.options.editableInline && (column.inputType === 'select')"
                     class="form-control sg-column-{{$index}}"
                     ng-model="row[column.field]"
                     ng-required="column.required"
