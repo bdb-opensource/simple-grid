@@ -12,8 +12,11 @@ table.simple-grid > tbody > tr > td > input
     padding-left: 7px;
     padding-right: 7px;
 }
-table.simple-grid > tbody > tr > td .ng-invalid {
-    background-color: #fcc !important;
+table.simple-grid > tbody > tr > td > input.ng-invalid, 
+table.simple-grid > tbody > tr > td > input.ng-invalid:focus,
+table.simple-grid > tbody > tr > td > select.ng-invalid,
+table.simple-grid > tbody > tr > td > select.ng-invalid:focus {
+    background-color: #fcc;
 }
 table.simple-grid > tbody > tr > td > input:focus, 
 table.simple-grid > tbody > tr > td > input:hover
@@ -39,4 +42,21 @@ table.simple-grid > tbody > tr.deleted > td {
 table.simple-grid > tbody > tr.deleted > td > * {
     color: #888;
     text-decoration: line-through;
+}
+
+/* row selection */
+table.simple-grid > tbody > tr.selected
+, table.simple-grid > tbody > tr.selected > td {
+    background-color: #506BDA;
+    color: white;
+}
+table.simple-grid > tbody > tr.selected > td > input
+,table.simple-grid > tbody > tr.selected > td > select
+{
+    color: white;
+}
+table.simple-grid > tbody > tr.selected > td > input:focus
+,table.simple-grid > tbody > tr.selected > td > select:focus
+{
+    color: black;
 }

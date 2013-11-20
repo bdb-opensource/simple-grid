@@ -54,10 +54,12 @@ View:
 Controller:
 
     ...
+    $scope.myData = [{ age: 3, name: 'star' }, 
+                     { age: 2, name: 'sparky' }];
+                     
     $scope.myGridConfig = {
-        // 'rows' should point to your data
-        rows: [{ age: 3, name: 'star' }, 
-               { age: 2, name: 'sparky' }], 
+        // should return your data (an array)        
+        getData: function () { return $scope.myData; }, 
                
         options: { 
             showDelete: true,
@@ -75,7 +77,9 @@ Hopefully up-to-date in respect to the source.
 
 
     $scope.myGridConfig = {
-        rows: [{ age: 3 }, { age: 5 }], // should point to your data
+        // should return your data (an array)        
+        getData: function () { return $scope.myData; }, 
+
         options: {
             columns: [
                 {
