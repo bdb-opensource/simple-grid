@@ -48,15 +48,14 @@
                     ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"
                     >
                 <i class="glyphicon glyphicon-pencil icon-pencil"></i></button>
-            <button type="button" class="btn btn-sm btn-small sg-column-{{simpleGrid.options.columns.length}}"
+            <button type="button" class="btn btn-sm btn-small btn-danger sg-column-{{simpleGrid.options.columns.length}}"
                     ng-if="simpleGrid.options.showDelete"
-                    ng-class="{'btn-danger': !row.$deleted }"
-                    ng-click="markDeleted(row)"
+                    ng-click="toggleDeleted(row)"
                     ng-focus="cellFocused(row, null)"
                     ng-keydown="keydown($event, $parent.$index, simpleGrid.options.columns.length)"
-                    ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"
+                    ng-disabled="column.disabled || simpleGrid.options.disabled"
                     >
-                <i class="glyphicon glyphicon-trash icon-trash icon-white"></i></button>
+                <i class="glyphicon icon-white" ng-class="{'glyphicon-remove icon-remove': !row.$deleted, 'glyphicon-repeat icon-repeat': row.$deleted}"></i></button>
         </td>
     </tr>
     </tbody>

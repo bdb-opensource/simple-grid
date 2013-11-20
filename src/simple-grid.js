@@ -18,9 +18,9 @@
                         return str[0].toUpperCase() + str.slice(1);
                     };
 
-                    scope.markDeleted = function (row) {
-                        row.$deleted = true;
-                        if (scope.simpleGrid.options && scope.simpleGrid.options.rowDeleted) {
+                    scope.toggleDeleted = function (row) {
+                        row.$deleted = !row.$deleted;
+                        if (row.$deleted && scope.simpleGrid.options && scope.simpleGrid.options.rowDeleted) {
                             scope.simpleGrid.options.rowDeleted(row);
                         }
                     };
