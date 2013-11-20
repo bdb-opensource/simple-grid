@@ -43,6 +43,9 @@ table.simple-grid > tbody > tr.deleted > td > * {
     color: #888;
     text-decoration: line-through;
 }
+table.simple-grid > tbody > td.deleted > td.sg-action-cell {
+    text-decoration: none;
+}
 
 /* row selection */
 table.simple-grid > tbody > tr.selected
