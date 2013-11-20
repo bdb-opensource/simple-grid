@@ -58,10 +58,14 @@
                         }
                     };
 
-                    scope.cellFocused = function (row, column) {
+                    scope.selectRow = function (row) {
                         scope.selectedRow = row;
+                    }
+
+                    scope.cellFocused = function (row, column) {
+                        scope.selectRow(row);
                         if (column) {
-                            scope.simpleGrid.callbacks.cellFocused(row, column);
+                            scope.simpleGrid.options.cellFocused(row, column);
                         }
                     };
 
