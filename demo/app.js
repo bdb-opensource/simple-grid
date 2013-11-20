@@ -34,14 +34,19 @@
                             title: 'Favorite Lunch',
                             inputType: 'text',
                             disabled: true
+                        },
+                        {
+                            field: 'approved',
+                            title: 'Approved?',
+                            inputType: 'checkbox'
                         }
                     ]
                 },
                 getData: function () { return $scope.data; }
             };
             
-            $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk' },
-                            { name: 'schmo', age: 100, food: 'Steak' }
+            $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk', approved: false },
+                            { name: 'schmo', age: 100, food: 'Steak', approved: true }
                           ];
             // an empty grid: same options, no data.
             $scope.emptyData = [];

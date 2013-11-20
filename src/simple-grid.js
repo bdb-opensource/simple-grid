@@ -58,6 +58,20 @@
                         }
                     };
 
+                    scope.getCellText = function(row, column) {
+                        var cellValue = row[column.field];
+                        if (column.inputType === 'select') {
+                            return scope.getOptionTitleByValue(column.options, cellValue);
+                        }
+                        return cellValue;
+                    };
+
+                    scope.getOptionTitleByValue = function(options, value) {
+                        return options.filter(function (option) {
+                            return option.value === value;
+                        })[0].title;
+                    };
+
                     scope.selectRow = function (row) {
                         scope.selectedRow = row;
                     }
