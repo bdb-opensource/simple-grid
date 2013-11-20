@@ -14,19 +14,22 @@
         ng-class="{deleted: row.$deleted}">
 
         <td ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell">
-            <input ng-if="column.inputType !== 'select'"  class="form-control"
+                <span ng-if="simpleGrid.options.disabled">
+                    {{row[column.field]}}
+                </span>
+            <input ng-if="!simpleGrid.options.disabled && (column.inputType !== 'select')" class="form-control"
                    type="{{ column.inputType || 'text' }}"
                    ng-model="row[column.field]"
                    ng-required="column.required"
                    placeholder="{{column.placeholder}}"
                    ng-focus="simpleGrid.callbacks.cellFocused(row, column)"
-                   ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"/>
+                   ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"/>
 
-            <select ng-if="column.inputType === 'select'" class="form-control"
+            <select ng-if="!simpleGrid.options.disabled && (column.inputType === 'select')" class="form-control"
                     ng-model="row[column.field]"
                     ng-required="column.required"
                     ng-focus="simpleGrid.callbacks.cellFocused(row, column)"
-                    ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"
+                    ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"
                     ng-options="option.value as option.title for option in column.options"/>
 
         </td>

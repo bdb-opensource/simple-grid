@@ -22,12 +22,12 @@
                             scope.simpleGrid.options.rowDeleted(row);
                         }
                     };
-                    
+					
                     scope.isInvalid = function (rowIndex) {
                         var formCtrl = scope.$eval('simpleGrid' + scope.gridNum + 'Row' + rowIndex);
                         return formCtrl.$error;
                     };
-                    
+
                     scope.gridNum = gridNum;
                     gridNum += 1;
                     
