@@ -33,17 +33,24 @@
                         }
                     ]
                 },
-                rows: [ { name: 'joe', age: 1, sex: 1, food: 'Milk' },
-                        { name: 'schmo', age: 100, food: 'Steak' }
-                      ]
+                getData: function () { return $scope.data; }
             };
             
+            $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk' },
+                            { name: 'schmo', age: 100, food: 'Steak' }
+                          ];
             // an empty grid: same options, no data.
-            $scope.gridConfigEmpty = { options: $scope.gridConfig.options, rows: [] };
+            $scope.emptyData = [];
+            $scope.gridConfigEmpty = { options: $scope.gridConfig.options, getData: function () { return $scope.emptyData; } };
             
             // utility stuff
             $scope.filterDeleted = function (rows) {
-                return rows.filter(function (row) { return !row.$deleted; });
+                // TODO: Exteremly inefficient...
+                var filtered = rows.filter(function (row) { return !row.$deleted; });
+                rows.splice(0, rows.length);
+                angular.forEach(filtered, function (item) {
+                    rows.push(item);
+                });
             };
             
             $scope.pretty = function (obj) {
