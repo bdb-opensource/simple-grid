@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th ng-repeat="column in simpleGrid.options.columns">{{column.title || capitalize(column.field)}}</th>
-        <th ng-if="simpleGrid.options.ShowDeleteButton"></th>
+        <th ng-if="simpleGrid.options.showDeleteButton"></th>
     </tr>
     </thead>
     <tbody>
@@ -42,9 +42,9 @@
 
         </td>
 
-        <td ng-if="simpleGrid.options.ShowDeleteButton || simpleGrid.options.ShowEditButton" class="sg-actions-cell">
+        <td ng-if="simpleGrid.options.showDeleteButton || simpleGrid.options.showEditButton" class="sg-actions-cell">
             <button type="button" class="btn btn-sm btn-small sg-column-{{simpleGrid.options.columns.length}}"
-                    ng-if="simpleGrid.options.ShowEditButton"
+                    ng-if="simpleGrid.options.showEditButton"
                     ng-click="editRequested(row)"
                     ng-focus="cellFocused(row, null)"
                     ng-keydown="keydown($event, $parent.$index, simpleGrid.options.columns.length)"
@@ -53,7 +53,7 @@
                 <i class="glyphicon glyphicon-pencil icon-pencil"></i></button>
             <button type="button"
                     class="btn btn-sm btn-small btn-danger sg-column-{{simpleGrid.options.columns.length}}"
-                    ng-if="simpleGrid.options.ShowDeleteButton"
+                    ng-if="simpleGrid.options.showDeleteButton"
                     ng-click="toggleDeleted(row)"
                     ng-focus="cellFocused(row, null)"
                     ng-keydown="keydown($event, $parent.$index, simpleGrid.options.columns.length)"

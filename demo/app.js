@@ -7,8 +7,8 @@
             // an example grid config
             $scope.gridConfig = {
                 options: {
-                    ShowDeleteButton: true,
-                    ShowEditButton: true,
+                    showDeleteButton: true,
+                    showEditButton: true,
                     editRequested: function(row) { console.log('edit request:', row); },
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
