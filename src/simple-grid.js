@@ -79,7 +79,10 @@
 
                     scope.selectRow = function (row) {
                         scope.selectedRow = row;
-                    }
+                        if (scope.simpleGrid.options.rowSelected) {
+                            scope.simpleGrid.options.rowSelected(row);
+                        }
+                    };
 
                     scope.cellFocused = function (row, column) {
                         scope.selectRow(row);

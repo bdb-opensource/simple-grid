@@ -12,6 +12,7 @@
                     editRequested: function(row) { console.log('edit request:', row); },
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
+                    rowSelected: function(row) { console.log('selected:', row); },
                     editable: false,
                     disabled: false,
                     columns: [
@@ -44,7 +45,7 @@
                 },
                 getData: function () { return $scope.data; }
             };
-            
+
             $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk', approved: false },
                             { name: 'schmo', age: 100, food: 'Steak', approved: true }
                           ];
@@ -61,7 +62,7 @@
                     rows.push(item);
                 });
             };
-            
+
             $scope.pretty = function (obj) {
                 var filteredObj = angular.copy(obj);
                 angular.forEach(filteredObj, function (val, name) {
