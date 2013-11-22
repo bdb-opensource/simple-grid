@@ -67,9 +67,14 @@
                     };
 
                     scope.getOptionTitleByValue = function(options, value) {
-                        return options.filter(function (option) {
+                        var options = options.filter(function (option) {
                             return option.value === value;
-                        })[0].title;
+                        });
+                        if (!options.length) {
+                            //TODO: Write a log indicating that the value was not found.
+                            return value
+                        }
+                        return options[0].title;
                     };
 
                     scope.selectRow = function (row) {
