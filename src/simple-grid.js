@@ -11,6 +11,11 @@
                 },
 
                 link: function (scope, elem, attrs) {
+                    function initialize() {
+                        scope.gridNum = gridNum;
+                        gridNum += 1;
+                    }
+                    
                     scope.capitalize = function (str) {
                         if (!str) {
                             return str;
@@ -19,7 +24,7 @@
                     };
 
                     scope.toggleDeleted = function (row) {
-                        row.$deleted = !row.$deleted;
+                        row.$deleted = !(row.$deleted || false);
                         if (row.$deleted && scope.simpleGrid.options && scope.simpleGrid.options.rowDeleted) {
                             scope.simpleGrid.options.rowDeleted(row);
                         }
@@ -41,20 +46,18 @@
                         switch (event.keyCode) {
                         case 40: //down
                             elem = document.getElementById(scope.formName(rowIndex + 1));
-                            event.preventDefault();
                             break;
                         case 38: //up
                             elem = document.getElementById(scope.formName(rowIndex - 1));
-                            event.preventDefault();
                             break;
                         }
-                        if (elem) {
-                            elems = elem.getElementsByClassName('sg-column-' + colIndex);
-                            if (elems.length) {
-                                $timeout(function () {
-                                    elems[0].focus();
-                                });
-                            }
+                        if (!elem) {
+                            return;
+                        }
+                        event.preventDefault();
+                        elems = elem.getElementsByClassName('sg-column-' + colIndex, angular.element(elem));
+                        if (elems.length) {
+                            $timeout(function () { elems[0].focus(); });
                         }
                     };
 
@@ -67,6 +70,8 @@
                     };
 
                     scope.getOptionTitleByValue = function (options, value) {
+                        // TODO: Highly ineffecient.
+                        // TODO: Array.prototype.filter is not compatible with older browsers
                         var filteredOptions = options.filter(function (option) {
                             return option.value === value;
                         });
@@ -86,18 +91,24 @@
 
                     scope.cellFocused = function (row, column) {
                         scope.selectRow(row);
-                        if (column) {
+                        if (column && scope.simpleGrid.options.cellFocused) {
                             scope.simpleGrid.options.cellFocused(row, column);
                         }
+                    };
+                    
+                    scope.getOptions = function (options) {
+                        if (options.length && angular.isString(options[0])) {
+                            // TODO: Not compatible with old browsers
+                            return options.map(function (val) { return { value: val, title: scope.capitalize(val) }; });
+                        }
+                        return options;
                     };
 
                     scope.formName = function (rowIndex) {
                         return 'simpleGrid' + scope.gridNum.toString() + 'Row' + rowIndex.toString();
                     };
 
-                    scope.gridNum = gridNum;
-                    gridNum += 1;
-
+                    initialize();
                 },
 
                 templateUrl: function (tElement, tAttrs) {

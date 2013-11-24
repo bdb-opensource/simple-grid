@@ -15,11 +15,20 @@
         id="{{formName($index)}}"
         ng-class="{deleted: row.$deleted, selected: selectedRow===row}">
 
-        <td ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell"  ng-switch="column.inputType">
-            <span ng-if="!simpleGrid.options.editable && (column.inputType !== 'checkbox')">
+        <td ng-if="!simpleGrid.options.editable" ng-repeat="column in simpleGrid.options.columns"  class="sg-data-cell">
+            <span ng-if="column.inputType !== 'checkbox'">
                 {{getCellText(row, column)}}
             </span>
-            <input ng-if="(column.inputType === 'checkbox') || (simpleGrid.options.editable && (column.inputType !== 'select'))"
+            <!-- non-editable checkbox -->
+            <input ng-if="column.inputType === 'checkbox'"
+                   type="checkbox"
+                   ng-checked="row[column.field]"
+                   disabled="disabled"
+                   />
+        </td>
+        
+        <td ng-if="simpleGrid.options.editable" ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell">
+            <input ng-if="column.inputType !== 'select'"
                    class="form-control sg-column-{{$index}}"
                    type="{{ column.inputType || 'text' }}"
                    ng-model="row[column.field]"
@@ -31,15 +40,14 @@
                    ng-disabled="!simpleGrid.options.editable"
                     />
 
-            <select ng-if="simpleGrid.options.editable && (column.inputType === 'select')"
+            <select ng-if="column.inputType === 'select'"
                     class="form-control sg-column-{{$index}}"
                     ng-model="row[column.field]"
                     ng-required="column.required"
                     ng-focus="cellFocused(row, column)"
                     ng-keydown="keydown($event, $parent.$parent.$index, $index)"
                     ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"
-                    ng-options="option.value as option.title for option in column.options"/>
-
+                    ng-options="option.value as option.title for option in getOptions(column.options)"/>
         </td>
 
         <td ng-if="simpleGrid.options.showDeleteButton || simpleGrid.options.showEditButton" class="sg-actions-cell">

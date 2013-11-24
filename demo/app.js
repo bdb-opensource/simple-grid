@@ -8,12 +8,12 @@
             $scope.gridConfig = {
                 options: {
                     showDeleteButton: true,
-                    showEditButton: true,
+                    showEditButton: false,
                     editRequested: function (row) { console.log('edit request:', row); },
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
                     rowSelected: function (row) { console.log('selected:', row); },
-                    editable: false,
+                    editable: true,
                     disabled: false,
                     columns: [
                         {
@@ -44,6 +44,35 @@
                     ]
                 },
                 getData: function () { return $scope.data; }
+            };
+            
+            $scope.metaGridConfig = {
+                options: {
+                    editable: true,
+                    columns: [
+                        {
+                            field: 'field',
+                            required: true
+                        },
+                        {
+                            field: 'inputType',
+                            inputType: 'select',
+                            options: ['text', 'number', 'select', 'checkbox']
+                        },
+                        {
+                            field: 'title'
+                        },
+                        {
+                            field: 'required',
+                            inputType: 'checkbox'
+                        },
+                        {
+                            field: 'disabled',
+                            inputType: 'checkbox'
+                        }
+                    ]
+                },
+                getData: function () { return $scope.gridConfig.options.columns; }
             };
 
             $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk', approved: false },
