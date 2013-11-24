@@ -83,25 +83,44 @@ Hopefully up-to-date in respect to the source.
         options: {
             columns: [
                 {
-                    field: 'age',
+                    field: 'species',
                     
-                    title: 'Age', // optional, default is field with first letter capitalized
-                    inputType: 'number', // optional, default = text
+                    title: 'Species', // optional, default is field with first letter capitalized
+                    inputType: 'number', // optional, default = text. one of: text, number, checkbox, select
                     required: false, // optional, default = false
                     disabled: false // optional, default = false
+                    
+                    // required if inputType is 'select' - feeds the dropdown
+                    // array of objects with {value: , title: } properties
+                    // alternative format: array of strings (each will serve as both value and title)
+                    options: [{ value: 'f', title: 'flamingo'}, 
+                              { value: 'd', title: 'dog'}]
                 },
                 // ...more columns
             ],
             
+            // optional - are the cells in the grid actually editable?
+            editable: true,
+            
+            // optional - if set to 'true' and editable is true, the grid is editable (cells are input controls) but they are all disabled
+            disabled: false,
+            
             // optional - will show a 'delete' button at the end of each row
-            showDelete: true, 
+            showDeleteButton: false,
+            
+            // optional - will show an 'edit' button at the end of each row
+            showEditButton: false,
             
             // optional - callbacks for actions on rows
-            deleted: function (row) { console.log('deleted:', row); },
-            focused: function (row, column) { console.log('focused:', row, column); }
+            editRequested: function (row) { },
+            rowDeleted: function (row) { },
+            cellFocused: function (row, column) { },
+            rowSelected: function (row) { },
         }
     }
     ...
 
-See the `demo` directory in the source for a full demo.
 
+[See the demo here](http://sinelaw.github.io/simple-grid/demo/index.html).
+
+See the `demo` directory in the source for the demo's source, 

@@ -16,6 +16,13 @@
                         gridNum += 1;
                     }
                     
+                    scope.isEditable = function () {
+                        if (angular.isUndefined(scope.simpleGrid.options.editable)) {
+                            return true; // editable by default
+                        }
+                        return scope.simpleGrid.options.editable || false;
+                    };
+                    
                     scope.capitalize = function (str) {
                         if (!str) {
                             return str;

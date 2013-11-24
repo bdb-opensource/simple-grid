@@ -4,14 +4,21 @@ table.simple-grid > tbody > tr > td > select
 }
 table.simple-grid > tbody > tr > td > input
 /*, table.simple-grid > tbody > tr > td > select */
-
 {
+    margin: 0;
     border: none;
     background-color: transparent;
     box-shadow: none;
     padding-left: 7px;
     padding-right: 7px;
+    width: 100%;
 }
+
+table.simple-grid > tbody > tr > td > input[type="checkbox"]
+{
+    width: auto;
+}
+
 table.simple-grid > tbody > tr > td > input.ng-invalid, 
 table.simple-grid > tbody > tr > td > input.ng-invalid:focus,
 table.simple-grid > tbody > tr > td > select.ng-invalid,
