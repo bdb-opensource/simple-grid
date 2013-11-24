@@ -9,10 +9,10 @@
                 options: {
                     showDeleteButton: true,
                     showEditButton: true,
-                    editRequested: function(row) { console.log('edit request:', row); },
+                    editRequested: function (row) { console.log('edit request:', row); },
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
-                    rowSelected: function(row) { console.log('selected:', row); },
+                    rowSelected: function (row) { console.log('selected:', row); },
                     editable: false,
                     disabled: false,
                     columns: [

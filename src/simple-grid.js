@@ -25,7 +25,7 @@
                         }
                     };
 
-                    scope.editRequested = function(row) {
+                    scope.editRequested = function (row) {
                         if (scope.simpleGrid.options.editRequested) {
                             scope.simpleGrid.options.editRequested(row);
                         }
@@ -58,7 +58,7 @@
                         }
                     };
 
-                    scope.getCellText = function(row, column) {
+                    scope.getCellText = function (row, column) {
                         var cellValue = row[column.field];
                         if (column.inputType === 'select') {
                             return scope.getOptionTitleByValue(column.options, cellValue);
@@ -66,15 +66,15 @@
                         return cellValue;
                     };
 
-                    scope.getOptionTitleByValue = function(options, value) {
-                        var options = options.filter(function (option) {
+                    scope.getOptionTitleByValue = function (options, value) {
+                        var filteredOptions = options.filter(function (option) {
                             return option.value === value;
                         });
-                        if (!options.length) {
-                            //TODO: Write a log indicating that the value was not found.
-                            return value
+                        if (!filteredOptions.length) {
+                            // TODO: Write a log indicating that the value was not found.
+                            return value;
                         }
-                        return options[0].title;
+                        return filteredOptions[0].title;
                     };
 
                     scope.selectRow = function (row) {
