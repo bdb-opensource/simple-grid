@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th ng-repeat="column in simpleGrid.options.columns">{{column.title || capitalize(column.field)}}</th>
-        <th ng-if="simpleGrid.options.showDelete"></th>
+        <th ng-if="simpleGrid.options.showDeleteButton"></th>
     </tr>
     </thead>
     <tbody>
@@ -10,15 +10,25 @@
         <td colspan="0"><em>No items</em></td>
     </tr>
     <tr ng-repeat="row in simpleGrid.getData()"
+        ng-click="selectRow(row)"
         ng-form="{{formName($index)}}"
         id="{{formName($index)}}"
         ng-class="{deleted: row.$deleted, selected: selectedRow===row}">
 
-        <td ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell">
-                <span ng-if="simpleGrid.options.disabled">
-                    {{row[column.field]}}
-                </span>
-            <input ng-if="!simpleGrid.options.disabled && (column.inputType !== 'select')" 
+        <td ng-if="!simpleGrid.options.editable" ng-repeat="column in simpleGrid.options.columns"  class="sg-data-cell">
+            <span ng-if="column.inputType !== 'checkbox'">
+                {{getCellText(row, column)}}
+            </span>
+            <!-- non-editable checkbox -->
+            <input ng-if="column.inputType === 'checkbox'"
+                   type="checkbox"
+                   ng-checked="row[column.field]"
+                   disabled="disabled"
+                   />
+        </td>
+        
+        <td ng-if="simpleGrid.options.editable" ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell">
+            <input ng-if="column.inputType !== 'select'"
                    class="form-control sg-column-{{$index}}"
                    type="{{ column.inputType || 'text' }}"
                    ng-model="row[column.field]"
@@ -26,28 +36,40 @@
                    placeholder="{{column.placeholder}}"
                    ng-focus="cellFocused(row, column)"
                    ng-keydown="keydown($event, $parent.$parent.$index, $index)"
-                   ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"/>
+                   ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"
+                   ng-disabled="!simpleGrid.options.editable"
+                    />
 
-            <select ng-if="!simpleGrid.options.disabled && (column.inputType === 'select')" 
+            <select ng-if="column.inputType === 'select'"
                     class="form-control sg-column-{{$index}}"
                     ng-model="row[column.field]"
                     ng-required="column.required"
                     ng-focus="cellFocused(row, column)"
                     ng-keydown="keydown($event, $parent.$parent.$index, $index)"
                     ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"
-                    ng-options="option.value as option.title for option in column.options"/>
-
+                    ng-options="option.value as option.title for option in getOptions(column.options)"/>
         </td>
 
-        <td ng-if="simpleGrid.options.showDelete" class="sg-actions-cell">
+        <td ng-if="simpleGrid.options.showDeleteButton || simpleGrid.options.showEditButton" class="sg-actions-cell">
             <button type="button" class="btn btn-sm btn-small sg-column-{{simpleGrid.options.columns.length}}"
-                    ng-class="{'btn-danger': !row.$deleted }"
-                    ng-click="markDeleted(row)"
+                    ng-if="simpleGrid.options.showEditButton"
+                    ng-click="editRequested(row)"
                     ng-focus="cellFocused(row, null)"
                     ng-keydown="keydown($event, $parent.$index, simpleGrid.options.columns.length)"
                     ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"
                     >
-                <i class="glyphicon glyphicon-trash icon-trash icon-white"></i></button>
+                <i class="glyphicon glyphicon-pencil icon-pencil"></i></button>
+            <button type="button"
+                    class="btn btn-sm btn-small btn-danger sg-column-{{simpleGrid.options.columns.length}}"
+                    ng-if="simpleGrid.options.showDeleteButton"
+                    ng-click="toggleDeleted(row)"
+                    ng-focus="cellFocused(row, null)"
+                    ng-keydown="keydown($event, $parent.$index, simpleGrid.options.columns.length)"
+                    ng-disabled="column.disabled || simpleGrid.options.disabled"
+                    >
+                <i class="glyphicon icon-white"
+                   ng-class="{'glyphicon-remove icon-remove': !row.$deleted, 'glyphicon-repeat icon-repeat': row.$deleted}"></i>
+            </button>
         </td>
     </tr>
     </tbody>
