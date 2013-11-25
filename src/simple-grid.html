@@ -13,7 +13,7 @@
         ng-click="selectRow(row)"
         ng-form="{{formName($index)}}"
         id="{{formName($index)}}"
-        ng-class="{deleted: row.$deleted, selected: selectedRow===row}">
+        ng-class="{deleted: row.$deleted, added: row.$added, selected: selectedRow===row}">
 
         <td ng-if="!isEditable()" ng-repeat="column in simpleGrid.options.columns"  class="sg-data-cell">
             <span ng-if="column.inputType !== 'checkbox'">
@@ -37,7 +37,6 @@
                    ng-focus="cellFocused(row, column)"
                    ng-keydown="keydown($event, $parent.$parent.$index, $index)"
                    ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"
-                   ng-disabled="!isEditable()"
                     />
 
             <select ng-if="column.inputType === 'select'"
@@ -46,7 +45,7 @@
                     ng-required="column.required"
                     ng-focus="cellFocused(row, column)"
                     ng-keydown="keydown($event, $parent.$parent.$index, $index)"
-                    ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"
+                    ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"
                     ng-options="option.value as option.title for option in getOptions(column.options)"/>
         </td>
 

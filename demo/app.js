@@ -101,6 +101,14 @@
                 });
                 return JSON.stringify(filteredObj, undefined, '    ');
             };
+
+            $scope.addRow = function() {
+                $scope.gridConfig.getData().push(
+                    {
+                        $added: true
+                    }
+                )
+            }
         });
 
 }());

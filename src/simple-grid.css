@@ -53,6 +53,10 @@ table.simple-grid > tbody > tr.deleted > td > * {
 table.simple-grid > tbody > td.deleted > td.sg-actions-cell {
     text-decoration: none;
 }
+table.simple-grid > tbody > tr.added,
+table.simple-grid > tbody > tr.added > td {
+    background-color: #DFFFC0;
+}
 
 /* row selection */
 table.simple-grid > tbody > tr.selected
