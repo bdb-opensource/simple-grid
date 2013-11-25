@@ -9,7 +9,7 @@
     <tr ng-if="!simpleGrid.getData().length">
         <td colspan="0"><em>No items</em></td>
     </tr>
-    <tr ng-repeat="row in simpleGrid.getData()"
+    <tr ng-repeat="row in simpleGrid.getData() | orderBy:simpleGrid.options.orderBy:isOrderByReverse()"
         ng-click="selectRow(row)"
         ng-form="{{formName($index)}}"
         id="{{formName($index)}}"

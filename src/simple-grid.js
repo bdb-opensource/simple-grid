@@ -115,6 +115,10 @@
                         return 'simpleGrid' + scope.gridNum.toString() + 'Row' + rowIndex.toString();
                     };
 
+                    scope.isOrderByReverse = function() {
+                        return angular.isUndefined(scope.simpleGrid.options.reverseOrder) ? false : scope.simpleGrid.options.reverseOrder;
+                    }
+
                     initialize();
                 },
 

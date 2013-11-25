@@ -13,6 +13,8 @@
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
                     rowSelected: function (row) { console.log('selected:', row); },
+                    orderBy: 'age',
+                    reverseOrder: false,
                     editable: true, // true is the default
                     disabled: false,
                     columns: [
