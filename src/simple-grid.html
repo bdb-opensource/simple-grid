@@ -15,16 +15,19 @@
         id="{{formName($index)}}"
         ng-class="{deleted: row.$deleted, added: row.$added, selected: selectedRow===row}">
 
-        <td ng-if="!isEditable()" ng-repeat="column in simpleGrid.options.columns"  class="sg-data-cell">
-            <span ng-if="column.inputType !== 'checkbox'">
-                {{getCellText(row, column)}}
+        <td ng-if="!isEditable()" ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell" ng-switch="column.inputType">
+            <span ng-switch-when="date">
+                {{getCellText(row, column) | date:column.dateFormat}}
             </span>
             <!-- non-editable checkbox -->
-            <input ng-if="column.inputType === 'checkbox'"
+            <input ng-switch-when="checkbox"
                    type="checkbox"
                    ng-checked="row[column.field]"
                    disabled="disabled"
-                   />
+                    />
+            <span ng-switch-default>
+                {{getCellText(row, column)}}
+            </span>
         </td>
         
         <td ng-if="isEditable()" ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell">

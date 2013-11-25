@@ -37,6 +37,12 @@
                             disabled: true
                         },
                         {
+                            field: 'dateOfBirth',
+                            title: 'Date of Birth',
+                            inputType: 'date',
+                            dateFormat: 'MM/dd/yyyy'
+                        },
+                        {
                             field: 'approved',
                             title: 'Approved?',
                             inputType: 'checkbox'
@@ -55,12 +61,16 @@
                             required: true
                         },
                         {
-                            field: 'inputType',
-                            inputType: 'select',
-                            options: ['text', 'number', 'select', 'checkbox']
+                            field: 'title'
                         },
                         {
-                            field: 'title'
+                            field: 'inputType',
+                            inputType: 'select',
+                            options: ['text', 'number', 'select', 'checkbox', 'date']
+                        },
+                        {
+                            field: 'dateFormat',
+                            inputType: 'text'
                         },
                         {
                             field: 'required',
@@ -75,8 +85,8 @@
                 getData: function () { return $scope.gridConfig.options.columns; }
             };
 
-            $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk', approved: false },
-                            { name: 'schmo', age: 100, food: 'Steak', approved: true }
+            $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk', dateOfBirth: '1993-07-27T22:33:59+04:00', approved: false },
+                            { name: 'schmo', age: 100, food: 'Steak', dateOfBirth: '2008-10-31T11:54:46+04:00', approved: true }
                           ];
             // an empty grid: same options, no data.
             $scope.emptyData = [];
