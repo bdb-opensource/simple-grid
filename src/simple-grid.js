@@ -117,7 +117,7 @@
 
                     scope.isOrderByReverse = function() {
                         return angular.isUndefined(scope.simpleGrid.options.reverseOrder) ? false : scope.simpleGrid.options.reverseOrder;
-                    }
+                    };
 
                     initialize();
                 },
