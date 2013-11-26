@@ -11,13 +11,27 @@
                 },
 
                 link: function (scope, elem, attrs) {
+                    
                     function initialize() {
+                        scope.gridNum = gridNum;
+                        gridNum += 1;
+                        
+                        scope.page = [];
                         scope.selectedRow = null;
                         scope.focusedRow = null;
-                        scope.gridNum = gridNum;
+                        
+                        scope.$watch('simpleGrid.getData()', function (newVal) {
+                            scope.data = newVal;
+                            scope.updatePage();
+                        });
+                        
+                        scope.$watch('simpleGrid.options.pageSize', scope.updatePage);
+                        scope.$watch('simpleGrid.options.pageNum', scope.updatePage);
+                        
                         scope.$watch('simpleGrid.options.editable', function () {
                             scope.gridIsEditable = scope.isEditable();
                         });
+                        
                         scope.$watch('simpleGrid.options.columns', function (newVal) {
                             angular.forEach(newVal, function (column) {
                                 if (column.inputType === 'select') {
@@ -26,9 +40,22 @@
                                 column.$title = column.title || scope.capitalize(column.field);
                             });
                         }, true);
-                        gridNum += 1;
+                        
                     }
                     
+                    scope.updatePage = function () {
+                        var i,
+                            pageSize = scope.simpleGrid.options.pageSize || scope.data.length,
+                            pageStart = (scope.simpleGrid.options.pageNum || 0) * pageSize;
+                        scope.page.length = 0;
+                        for (i = pageStart;
+                                i < Math.min(pageStart + pageSize,
+                                             scope.data.length);
+                                i += 1) {
+                            scope.page.push(scope.data[i]);
+                        }
+                    };
+
                     scope.isEditable = function () {
                         $log.debug('isEditable');
                         if (angular.isUndefined(scope.simpleGrid.options.editable)) {
@@ -75,7 +102,7 @@
                             targetRowIndex = rowIndex - 1;
                             break;
                         }
-                        if (targetRowIndex) {
+                        if (null !== targetRowIndex) {
                             elem = document.getElementById(scope.formName(targetRowIndex));
                         }
                         if (!elem) {

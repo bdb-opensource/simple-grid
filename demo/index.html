@@ -17,6 +17,12 @@
             display:block;
             overflow:auto;
         }
+        .grid-container {
+            height: 310px; overflow-y: auto;
+        }
+        .grid-container table {
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -44,10 +50,23 @@
                     <button type="button" class="btn btn-sm btn-success" ng-click="addRow()">Add row</button>
                     <button type="button" class="btn btn-sm btn-danger" ng-click="filterDeleted(gridConfig.getData())">Remove deleted rows</button>
                 </div>
+
                 <small>
                     <code>&lt;div simple-grid="gridConfig"&gt;&lt;/div&gt;</code>
                 </small>
-                <div simple-grid="gridConfig" style="max-height: 300px; overflow-y: auto"></div>
+                <div simple-grid="gridConfig" class="grid-container"></div>
+                <div style="text-align:center">
+                    Page: {{ gridConfig.options.pageNum + 1 }}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-primary" ng-click="movePage(-1)">
+                            &lt; Prev
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary" ng-click="movePage(1)">
+                            &gt; Next
+                        </button>
+                    </div>
+                </div>
+
                 <p>The data model for the above grid:
                     <code>{{data}}</code>
                 </p>
