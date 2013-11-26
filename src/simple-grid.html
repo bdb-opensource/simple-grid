@@ -10,7 +10,7 @@
     <tr ng-if="!data.length">
         <td colspan="0"><em>No items</em></td>
     </tr>
-    <tr ng-repeat="row in data | orderBy:simpleGrid.options.orderBy:isOrderByReverse()"
+    <tr ng-repeat="row in page"
         ng-init="rowIndex = $index"
         ng-click="setFocusedRow(row)"
         ng-form="{{formName($index)}}"

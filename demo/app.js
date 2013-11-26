@@ -27,6 +27,8 @@
                     editable: true, // true is the default - set here manually to true to make it easier to bind to in the demo html
                     disabled: false,
                     allowMultiSelect: true,
+                    pageSize: 5,
+                    pageNum: 0,
                     columns: [
                         {
                             field: 'name',
@@ -109,6 +111,11 @@
             $scope.gridConfigEmpty = { options: $scope.gridConfig.options, getData: function () { return $scope.emptyData; } };
 
             // utility stuff
+            $scope.movePage = function (offset) {
+                $scope.gridConfig.options.pageNum += offset;
+                $scope.gridConfig.options.pageNum = Math.max(0, $scope.gridConfig.options.pageNum);
+            };
+            
             $scope.filterDeleted = function (rows) {
                 // TODO: Exteremly inefficient...
                 var filtered = rows.filter(function (row) { return !row.$deleted; });
