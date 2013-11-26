@@ -12,6 +12,8 @@
 
                 link: function (scope, elem, attrs) {
                     function initialize() {
+                        scope.selectedRow = null;
+                        scope.focusedRow = null;
                         scope.gridNum = gridNum;
                         gridNum += 1;
                     }
@@ -92,15 +94,51 @@
                         return filteredOptions[0].title;
                     };
 
+                    scope.toggleRowSelected = function (row)  {
+                        if (row.$selected) {
+                            delete row.$selected;
+                            scope.selectRow(null);
+                        } else {
+                            scope.selectRow(row);
+                        }
+                    };
+
                     scope.selectRow = function (row) {
-                        scope.selectedRow = row;
+                        if (!scope.simpleGrid.options.allowMultiSelect) {
+                            if (scope.selectedRow && scope.selectedRow.$selected) {
+                                delete scope.selectedRow.$selected;
+                            }
+                            scope.selectedRow = row;
+                        }
+                        if (!row) {
+                            return;
+                        }
+                        row.$selected = true;
+
                         if (scope.simpleGrid.options.rowSelected) {
                             scope.simpleGrid.options.rowSelected(row);
                         }
                     };
 
+                    scope.setFocusedRow = function (row) {
+                        if (scope.focusedRow && scope.focusedRow.$focused) {
+                            delete scope.focusedRow.$focused;
+                        }
+                        if (row) {
+                            row.$focused = true;
+                        }
+                        scope.focusedRow = row;
+                    };
+
+                    scope.cellBlurred = function (row, column) {
+                        scope.setFocusedRow(null);
+                    };
+
                     scope.cellFocused = function (row, column) {
-                        scope.selectRow(row);
+                        scope.setFocusedRow(row);
+                        if (!scope.simpleGrid.options.allowMultiSelect) {
+                            scope.selectRow(row);
+                        }
                         if (column && scope.simpleGrid.options.cellFocused) {
                             scope.simpleGrid.options.cellFocused(row, column);
                         }

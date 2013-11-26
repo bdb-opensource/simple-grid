@@ -17,6 +17,7 @@
                     reverseOrder: false,
                     editable: true, // true is the default
                     disabled: false,
+                    allowMultiSelect: true,
                     columns: [
                         {
                             field: 'name',
@@ -87,8 +88,9 @@
                 getData: function () { return $scope.gridConfig.options.columns; }
             };
 
-            $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk', dateOfBirth: '1993-07-27T22:33:59+04:00', approved: false },
-                            { name: 'schmo', age: 100, food: 'Steak', dateOfBirth: '2008-10-31T11:54:46+04:00', approved: true }
+            $scope.data = [ { name: 'Jooka', age: 1, sex: 1, food: 'Cookies', dateOfBirth: '1993-07-27T22:33:59+04:00', approved: false },
+                            { name: 'Schmo', age: 100, food: 'Steak', dateOfBirth: '2008-10-31T11:54:46+04:00', approved: true },
+                            { name: 'Sparky', age: 43, food: 'Cereal', dateOfBirth: '2003-04-31T11:54:46+04:00', approved: false }
                           ];
             // an empty grid: same options, no data.
             $scope.emptyData = [];
