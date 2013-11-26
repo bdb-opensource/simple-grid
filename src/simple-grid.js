@@ -20,7 +20,7 @@
                         scope.selectedRow = null;
                         scope.focusedRow = null;
                         
-                        scope.$watch('simpleGrid.getData()', function (newVal) {
+                        scope.$watchCollection('simpleGrid.getData()', function (newVal) {
                             scope.data = newVal;
                             scope.updatePage();
                         });
@@ -45,9 +45,14 @@
                     
                     scope.updatePage = function () {
                         var i,
-                            pageSize = scope.simpleGrid.options.pageSize || scope.data.length,
-                            pageStart = (scope.simpleGrid.options.pageNum || 0) * pageSize;
+                            pageSize,
+                            pageStart;
                         scope.page.length = 0;
+                        if (!scope.data) {
+                            return;
+                        }
+                        pageSize = scope.simpleGrid.options.pageSize || scope.data.length;
+                        pageStart = (scope.simpleGrid.options.pageNum || 0) * pageSize;
                         for (i = pageStart;
                                 i < Math.min(pageStart + pageSize,
                                              scope.data.length);
