@@ -73,6 +73,9 @@
                         if (column.inputType === 'select') {
                             return scope.getOptionTitleByValue(column.options, cellValue);
                         }
+                        if (column.formatter) {
+                            return column.formatter(cellValue);
+                        }
                         return cellValue;
                     };
 

@@ -16,9 +16,6 @@
         ng-class="{deleted: row.$deleted, added: row.$added, selected: selectedRow===row}">
 
         <td ng-if="!isEditable()" ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell" ng-switch="column.inputType">
-            <span ng-switch-when="date">
-                {{getCellText(row, column) | date:column.dateFormat}}
-            </span>
             <!-- non-editable checkbox -->
             <input ng-switch-when="checkbox"
                    type="checkbox"

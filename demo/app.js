@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('demo', ['simpleGrid'])
-        .controller('MainCtrl', function ($scope) {
+        .controller('MainCtrl', function ($scope, $filter) {
             // an example grid config
             $scope.gridConfig = {
                 options: {
@@ -42,7 +42,7 @@
                             field: 'dateOfBirth',
                             title: 'Date of Birth',
                             inputType: 'date',
-                            dateFormat: 'MM/dd/yyyy'
+                            formatter: function (value) { return $filter('date')(value, 'MM/dd/yyyy'); }
                         },
                         {
                             field: 'approved',
