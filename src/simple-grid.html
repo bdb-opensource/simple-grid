@@ -43,7 +43,7 @@
         
         <td ng-if="gridIsEditable" 
             ng-repeat="column in simpleGrid.options.columns" 
-            ng-init="columnIndex = $index; isReadOnly = ((row.$deleted || simpleGrid.options.disabled) || column.disabled);" 
+            ng-init="columnIndex = $index" 
             class="sg-data-cell"
             ng-switch="column.inputType"
             >
@@ -55,7 +55,7 @@
                         ng-focus="cellFocused(row, column)"
                         ng-blur="cellBlurred(row, column)"
                         ng-keydown="keydown($event, rowIndex, columnIndex)"
-                        ng-disabled="isReadOnly"
+                        ng-disabled="((row.$deleted || simpleGrid.options.disabled) || column.disabled)"
                         ng-options="option.value as option.title for option in column.$options"/>
     
                 <input ng-switch-default=""
@@ -67,7 +67,7 @@
                        ng-focus="cellFocused(row, column)"
                        ng-blur="cellBlurred(row, column)"
                        ng-keydown="keydown($event, rowIndex, columnIndex)"
-                       ng-readonly="isReadOnly"
+                       ng-readonly="((row.$deleted || simpleGrid.options.disabled) || column.disabled)"
                         />
 <!--
             <span ng-show="!row.$focused" ng-switch="column.inputType">
