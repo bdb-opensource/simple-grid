@@ -46,12 +46,16 @@ table.simple-grid > tbody > tr.deleted,
 table.simple-grid > tbody > tr.deleted > td {
     background-color: #ddd !important;
 }
-table.simple-grid > tbody > tr.deleted > td > * {
+table.simple-grid > tbody > tr.deleted > td
+, table.simple-grid > tbody > tr.deleted > td input
+, table.simple-grid > tbody > tr.deleted > td span
+, table.simple-grid > tbody > tr.deleted > td select {
     color: #888;
     text-decoration: line-through;
 }
-table.simple-grid > tbody > td.deleted > td.sg-actions-cell {
+td.sg-actions-cell .btn {
     text-decoration: none;
+    color: white;
 }
 table.simple-grid > tbody > tr.added,
 table.simple-grid > tbody > tr.added > td {
@@ -59,13 +63,13 @@ table.simple-grid > tbody > tr.added > td {
 }
 
 /* row selection */
-table.simple-grid > tbody > tr.selected
-, table.simple-grid > tbody > tr.selected > td {
+table.simple-grid > tbody > tr.selected, table.simple-grid > tbody > tr.selected.focused
+, table.simple-grid > tbody > tr.selected > td, table.simple-grid > tbody > tr.selected.focused > td {
     background-color: #506BDA;
     color: white;
 }
-table.simple-grid > tbody > tr.selected > td > input
-,table.simple-grid > tbody > tr.selected > td > select
+table.simple-grid > tbody > tr.selected > td > input,table.simple-grid > tbody > tr.selected.focused > td > input
+,table.simple-grid > tbody > tr.selected > td > select,table.simple-grid > tbody > tr.selected.focused > td > select
 {
     color: white;
 }
@@ -73,4 +77,10 @@ table.simple-grid > tbody > tr.selected > td > input:focus
 ,table.simple-grid > tbody > tr.selected > td > select:focus
 {
     color: black;
+}
+
+/* focus */
+table.simple-grid > tbody > tr.focused
+, table.simple-grid > tbody > tr.focused > td {
+    background-color: #b0cBfA;
 }

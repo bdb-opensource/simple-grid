@@ -11,50 +11,63 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
 
     <link rel="stylesheet" href="../src/simple-grid.css" />
+    <style type="text/css">
+        code {
+            margin: 10px;
+            display:block;
+            overflow:auto;
+        }
+    </style>
 </head>
 
-<body ng-app="demo" class="container">
-
-    <script type="text/ng-template" id="simple-grid.html" src="../src/simple-grid.html"></script>
-
-    <h1>
-        <a href="https://github.com/sinelaw/simple-grid">simple-grid</a>: The Demo.</h1>
-    <p>simple-grid is an editable table for AngularJS in the form of a directive.</p>
-    <div ng-controller="MainCtrl" class="container">
+<body ng-app="demo">
+    <div class="container">
+        <script type="text/ng-template" id="simple-grid.html" src="../src/simple-grid.html"></script>
         <div class="row">
-
-            Grid options used in this demo:
-            <pre class="pre-scrollable" style="max-height: 200px">{{pretty(gridConfig.options)}}</pre>
-
-            <hr/>
+            <h1>
+                <a href="https://github.com/sinelaw/simple-grid">simple-grid</a>: The Demo.</h1>
+            <p>simple-grid is an editable table for AngularJS in the form of a directive.</p>
         </div>
+        <div ng-controller="MainCtrl">
+            <div class="row">
 
-        <div class="row">
-            <h2>Grid using above config</h2>
-            <p>(The add/discard buttons are part of the demo)</p>
-            <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-success" ng-click="addRow()">Add row</button>
-                <button type="button" class="btn btn-sm btn-danger" ng-click="filterDeleted(gridConfig.getData())">Remove deleted rows</button>
+                Grid options used in this demo:
+                <pre class="pre-scrollable" style="max-height: 200px">{{pretty(gridConfig.options)}}</pre>
+
+                <hr/>
             </div>
-            <small>
-                <code>&lt;div simple-grid="gridConfig"&gt;&lt;/div&gt;</code>
-            </small>
-            <div simple-grid="gridConfig"></div>
-            <p>The data model for the above grid:
-                <code>{{data}}</code>
-            </p>
 
-            <hr/>
-            <h2>Dynamically change the grid config</h2>
-            <input id="editable" type="checkbox" ng-model="gridConfig.options.editable"/> <label for="editable">Editable?</label>
+            <div class="row">
+                <h2>Grid using above config</h2>
+                <p>(The add/discard buttons are part of the demo)</p>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-success" ng-click="addRow()">Add row</button>
+                    <button type="button" class="btn btn-sm btn-danger" ng-click="filterDeleted(gridConfig.getData())">Remove deleted rows</button>
+                </div>
+                <small>
+                    <code>&lt;div simple-grid="gridConfig"&gt;&lt;/div&gt;</code>
+                </small>
+                <div simple-grid="gridConfig" style="max-height: 300px; overflow-y: auto"></div>
+                <p>The data model for the above grid:
+                    <code>{{data}}</code>
+                </p>
 
-            <h3>Columns of above grid, as editable data in another grid</h3>
-            <p>Change the data to dynamically update the columns of the grid above:</p>
-            <div simple-grid="metaGridConfig"></div>
+                <hr/>
+                <h2>Dynamically change the grid config</h2>
+                <input id="editable" type="checkbox" ng-model="gridConfig.options.editable" />
+                <label for="editable">Editable?</label>
+                <input id="allowMultiSelect" type="checkbox" ng-model="gridConfig.options.allowMultiSelect" />
+                <label for="allowMultiSelect">Allow Multi-Select?</label>
+
+                <h3>Columns of above grid, as editable data in another grid</h3>
+                <p>Change the data to dynamically update the columns of the grid above:</p>
+                <div simple-grid="metaGridConfig"></div>
+            </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.js"></script>
     <script src="../src/simple-grid.js"></script>
+    <!--    <script src="../src/scalyr.js"></script>-->
     <script src="app.js"></script>
 </body>
 
