@@ -119,7 +119,10 @@
                     };
 
                     scope.isOrderByReverse = function() {
-                        return angular.isUndefined(scope.simpleGrid.options.reverseOrder) ? false : scope.simpleGrid.options.reverseOrder;
+                        if (scope.simpleGrid && !angular.isUndefined(scope.simpleGrid.options.reverseOrder)) {
+                            return scope.simpleGrid.options.reverseOrder;
+                        }
+                        return false;
                     };
 
                     initialize();
