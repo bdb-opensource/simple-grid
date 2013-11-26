@@ -28,8 +28,8 @@
                         scope.$watch('simpleGrid.options.pageSize', scope.updatePage);
                         scope.$watch('simpleGrid.options.pageNum', scope.updatePage);
                         
-                        scope.$watch('simpleGrid.options.editable', function () {
-                            scope.gridIsEditable = scope.isEditable();
+                        scope.$watch('simpleGrid.options.editable', function (editable) {
+                            scope.gridIsEditable = scope.isEditable(editable);
                         });
                         
                         scope.$watch('simpleGrid.options.columns', function (newVal) {
@@ -61,12 +61,12 @@
                         }
                     };
 
-                    scope.isEditable = function () {
+                    scope.isEditable = function (editable) {
                         $log.debug('isEditable');
-                        if (angular.isUndefined(scope.simpleGrid.options.editable)) {
+                        if (angular.isUndefined(editable)) {
                             return true; // editable by default
                         }
-                        return scope.simpleGrid.options.editable || false;
+                        return editable || false;
                     };
                     
                     scope.capitalize = function (str) {
