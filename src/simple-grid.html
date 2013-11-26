@@ -20,6 +20,7 @@
         <td ng-if="simpleGrid.options.allowMultiSelect">
             <input class="form-control sg-column--1"
                    type="checkbox"
+                   ng-disabled="row.$deleted"
                    ng-focus="cellFocused(row, null)"
                    ng-blur="cellBlurred(row, null)"
                    ng-model="row.$selected"
@@ -75,13 +76,14 @@
                     >
                 <i class="glyphicon glyphicon-pencil icon-pencil"></i></button>
             <button type="button"
-                    class="btn btn-sm btn-small btn-danger sg-column-{{simpleGrid.options.columns.length}}"
+                    class="btn btn-sm btn-small sg-column-{{simpleGrid.options.columns.length}}"
                     ng-if="simpleGrid.options.showDeleteButton"
                     ng-click="toggleDeleted(row)"
                     ng-focus="cellFocused(row, null)"
                     ng-blur="cellBlurred(row, null)"
                     ng-keydown="keydown($event, rowIndex, simpleGrid.options.columns.length)"
                     ng-disabled="column.disabled || simpleGrid.options.disabled"
+                    ng-class="{'btn-danger': !row.$deleted, 'btn-warning': row.$deleted}"
                     >
                 <i class="glyphicon icon-white"
                    ng-class="{'glyphicon-remove icon-remove': !row.$deleted, 'glyphicon-repeat icon-repeat': row.$deleted}"></i>

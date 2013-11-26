@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('simpleGrid', [])
-        .directive('simpleGrid', function ($timeout) {
+        .directive('simpleGrid', function ($timeout, $log) {
             var gridNum = 0;
             return {
                 scope: {
@@ -60,6 +60,7 @@
                             elem = document.getElementById(scope.formName(rowIndex - 1));
                             break;
                         }
+                        $log.info(event.keyCode);
                         if (!elem) {
                             return;
                         }
@@ -95,7 +96,7 @@
                     };
 
                     scope.toggleRowSelected = function (row)  {
-                        if (row.$selected) {
+                        if (row && row.$selected) {
                             delete row.$selected;
                             scope.selectRow(null);
                         } else {
