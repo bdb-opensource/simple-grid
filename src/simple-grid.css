@@ -84,3 +84,9 @@ table.simple-grid > tbody > tr.focused
 , table.simple-grid > tbody > tr.focused > td {
     background-color: #b0cBfA;
 }
+
+
+input.ng-hide {
+    display: block !important;
+    visibility:collapse;
+}

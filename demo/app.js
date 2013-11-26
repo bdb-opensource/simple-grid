@@ -2,6 +2,15 @@
 (function () {
     'use strict';
 
+    function repeat(arr, times) {
+        var result = [], i = 0;
+        function push(val) { result.push(angular.copy(val)); }
+        for (i = 0; i < times; i += 1) {
+            angular.forEach(arr, push);
+        }
+        return result;
+    }
+    
     angular.module('demo', ['simpleGrid'])
         .controller('MainCtrl', function ($scope, $filter) {
             // an example grid config
@@ -13,9 +22,9 @@
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
                     rowSelected: function (row) { console.log('selected:', row); },
-                    orderBy: 'age',
-                    reverseOrder: false,
-                    editable: true, // true is the default
+                    //orderBy: 'age',
+                    //reverseOrder: false,
+                    //editable: false, // true is the default
                     disabled: false,
                     allowMultiSelect: true,
                     columns: [
@@ -92,6 +101,9 @@
                             { name: 'Schmo', age: 100, food: 'Steak', dateOfBirth: '2008-10-31T11:54:46+04:00', approved: true },
                             { name: 'Sparky', age: 43, food: 'Cereal', dateOfBirth: '2003-04-31T11:54:46+04:00', approved: false }
                           ];
+            
+            $scope.data = repeat($scope.data, 30);
+            
             // an empty grid: same options, no data.
             $scope.emptyData = [];
             $scope.gridConfigEmpty = { options: $scope.gridConfig.options, getData: function () { return $scope.emptyData; } };
@@ -116,13 +128,13 @@
                 return JSON.stringify(filteredObj, undefined, '    ');
             };
 
-            $scope.addRow = function() {
+            $scope.addRow = function () {
                 $scope.gridConfig.getData().push(
                     {
                         $added: true
                     }
-                )
-            }
+                );
+            };
         });
 
 }());

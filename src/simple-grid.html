@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <td ng-if="simpleGrid.options.allowMultiSelect">&nbsp;</td>
-        <th ng-repeat="column in simpleGrid.options.columns">{{column.title || capitalize(column.field)}}</th>
+        <th ng-repeat="column in simpleGrid.options.columns">{{column.$title}}</th>
         <th ng-if="simpleGrid.options.showDeleteButton"></th>
     </tr>
     </thead>
@@ -27,7 +27,7 @@
                    style="cursor:pointer;"
                    ng-keydown="keydown($event, rowIndex, -1)"/>
         </td>
-        <td ng-if="!isEditable()" ng-repeat="column in simpleGrid.options.columns"
+        <td ng-if="!gridIsEditable" ng-repeat="column in simpleGrid.options.columns"
             class="sg-data-cell"
             ng-switch="column.inputType">
             <!-- non-editable checkbox -->
@@ -36,33 +36,92 @@
                    ng-checked="row[column.field]"
                    disabled="disabled"
                     />
-            <span ng-switch-default>
+            <span ng-switch-default="">
                 {{getCellText(row, column)}}
             </span>
         </td>
         
-        <td ng-if="isEditable()" ng-repeat="column in simpleGrid.options.columns" ng-init="columnIndex = $index" class="sg-data-cell">
-            <input ng-if="column.inputType !== 'select'"
-                   class="form-control sg-column-{{columnIndex}}"
-                   type="{{ column.inputType || 'text' }}"
-                   ng-model="row[column.field]"
-                   ng-required="column.required"
-                   placeholder="{{column.placeholder}}"
-                   ng-focus="cellFocused(row, column)"
-                   ng-blur="cellBlurred(row, column)"
-                   ng-keydown="keydown($event, rowIndex, columnIndex)"
-                   ng-readonly="column.disabled || row.$deleted || simpleGrid.options.disabled"
-                    />
-
-            <select ng-if="column.inputType === 'select'"
-                    class="form-control sg-column-{{columnIndex}}"
-                    ng-model="row[column.field]"
-                    ng-required="column.required"
-                    ng-focus="cellFocused(row, column)"
-                    ng-blur="cellBlurred(row, column)"
-                    ng-keydown="keydown($event, rowIndex, columnIndex)"
-                    ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"
-                    ng-options="option.value as option.title for option in getOptions(column.options)"/>
+        <td ng-if="gridIsEditable" 
+            ng-repeat="column in simpleGrid.options.columns" 
+            ng-init="columnIndex = $index; isReadOnly = ((row.$deleted || simpleGrid.options.disabled) || column.disabled);" 
+            class="sg-data-cell"
+            ng-switch="column.inputType"
+            >
+<!--            ng-mousedown="setFocusedRow(row)"-->
+                <select ng-switch-when="select"
+                        class="form-control sg-column-{{columnIndex}}"
+                        ng-model="row[column.field]"
+                        ng-required="column.required"
+                        ng-focus="cellFocused(row, column)"
+                        ng-blur="cellBlurred(row, column)"
+                        ng-keydown="keydown($event, rowIndex, columnIndex)"
+                        ng-disabled="isReadOnly"
+                        ng-options="option.value as option.title for option in column.$options"/>
+    
+                <input ng-switch-default=""
+                       class="form-control sg-column-{{columnIndex}}"
+                       type="{{ column.inputType || 'text' }}"
+                       ng-model="row[column.field]"
+                       ng-required="column.required"
+                       placeholder="{{column.placeholder}}"
+                       ng-focus="cellFocused(row, column)"
+                       ng-blur="cellBlurred(row, column)"
+                       ng-keydown="keydown($event, rowIndex, columnIndex)"
+                       ng-readonly="isReadOnly"
+                        />
+<!--
+            <span ng-show="!row.$focused" ng-switch="column.inputType">
+                 row.$focused is abused here as evil trickery to improve angular performance by reducing the number of live bindings 
+                <select ng-switch-when="select"
+                        class="form-control"
+                        sly-prevent-evaluation-when-hidden=""
+                        ng-model="row[column.field]"
+                        ng-disabled="isReadOnly"
+                        ng-options="option.value as option.title for option in column.$options"/>
+                
+                <input ng-switch-default=""
+                       ng-if="(column.inputType !== 'checkbox')"
+                       sly-prevent-evaluation-when-hidden=""
+                       class="form-control"
+                       type="text"
+                       ng-value="row[column.field]"
+                       ng-readonly="isReadOnly"
+                       />
+                <input ng-switch-default=""
+                       ng-if="(column.inputType === 'checkbox')"
+                       sly-prevent-evaluation-when-hidden=""
+                       class="form-control"
+                       type="checkbox"
+                       ng-checked="row[column.field]"
+                       ng-readonly="isReadOnly"
+                       />
+            </span>
+            <span ng-show="row.$focused" ng-switch="column.inputType">
+                <select ng-switch-when="select"
+                        sly-prevent-evaluation-when-hidden=""
+                        class="form-control sg-column-{{columnIndex}}"
+                        ng-model="row[column.field]"
+                        ng-required="column.required"
+                        ng-focus="cellFocused(row, column)"
+                        ng-blur="cellBlurred(row, column)"
+                        ng-keydown="keydown($event, rowIndex, columnIndex)"
+                        ng-disabled="isReadOnly"
+                        ng-options="option.value as option.title for option in column.$options"/>
+    
+                <input ng-switch-default=""
+                       sly-prevent-evaluation-when-hidden=""
+                       class="form-control sg-column-{{columnIndex}}"
+                       type="{{ column.inputType || 'text' }}"
+                       ng-model="row[column.field]"
+                       ng-required="column.required"
+                       placeholder="{{column.placeholder}}"
+                       ng-focus="cellFocused(row, column)"
+                       ng-blur="cellBlurred(row, column)"
+                       ng-keydown="keydown($event, rowIndex, columnIndex)"
+                       ng-readonly="isReadOnly"
+                        />
+            </span>
+-->
         </td>
 
         <td ng-if="simpleGrid.options.showDeleteButton || simpleGrid.options.showEditButton" class="sg-actions-cell">
@@ -72,7 +131,7 @@
                     ng-focus="cellFocused(row, null)"
                     ng-blur="cellBlurred(row, null)"
                     ng-keydown="keydown($event, rowIndex, simpleGrid.options.columns.length)"
-                    ng-disabled="column.disabled || row.$deleted || simpleGrid.options.disabled"
+                    ng-disabled="(row.$deleted || simpleGrid.options.disabled)"
                     >
                 <i class="glyphicon glyphicon-pencil icon-pencil"></i></button>
             <button type="button"
@@ -82,7 +141,7 @@
                     ng-focus="cellFocused(row, null)"
                     ng-blur="cellBlurred(row, null)"
                     ng-keydown="keydown($event, rowIndex, simpleGrid.options.columns.length)"
-                    ng-disabled="column.disabled || simpleGrid.options.disabled"
+                    ng-disabled="simpleGrid.options.disabled"
                     ng-class="{'btn-danger': !row.$deleted, 'btn-warning': row.$deleted}"
                     >
                 <i class="glyphicon icon-white"

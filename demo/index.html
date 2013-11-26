@@ -39,7 +39,7 @@
             <small>
                 <code>&lt;div simple-grid="gridConfig"&gt;&lt;/div&gt;</code>
             </small>
-            <div simple-grid="gridConfig"></div>
+            <div simple-grid="gridConfig" style="max-height: 300px; overflow-y: auto"></div>
             <p>The data model for the above grid:
                 <code>{{data}}</code>
             </p>
@@ -53,8 +53,9 @@
             <div simple-grid="metaGridConfig"></div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.js"></script>
     <script src="../src/simple-grid.js"></script>
+<!--    <script src="../src/scalyr.js"></script>-->
     <script src="app.js"></script>
 </body>
 
