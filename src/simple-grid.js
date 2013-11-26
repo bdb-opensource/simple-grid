@@ -115,6 +115,7 @@
                             return;
                         }
                         row.$selected = true;
+                        scope.selectedRow = row;
 
                         if (scope.simpleGrid.options.rowSelected) {
                             scope.simpleGrid.options.rowSelected(row);
