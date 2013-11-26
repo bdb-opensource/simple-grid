@@ -73,6 +73,9 @@
                         if (column.inputType === 'select') {
                             return scope.getOptionTitleByValue(column.options, cellValue);
                         }
+                        if (column.formatter) {
+                            return column.formatter(cellValue);
+                        }
                         return cellValue;
                     };
 
@@ -113,6 +116,10 @@
 
                     scope.formName = function (rowIndex) {
                         return 'simpleGrid' + scope.gridNum.toString() + 'Row' + rowIndex.toString();
+                    };
+
+                    scope.isOrderByReverse = function() {
+                        return angular.isUndefined(scope.simpleGrid.options.reverseOrder) ? false : scope.simpleGrid.options.reverseOrder;
                     };
 
                     initialize();

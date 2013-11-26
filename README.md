@@ -10,7 +10,7 @@ Why another grid?
 * Easy to customize - use css with angular's form classes (`ng-invalid`, etc.) - or just copy & change the template html from the source.
 
 
-### [The Demo.](http://sinelaw.github.io/simple-grid/demo/index.html) Click it.
+### [The Demo.](http://bdb-opensource.github.io/simple-grid/demo/index.html) Click it.
 
 
 ## Quick start
@@ -121,6 +121,6 @@ Hopefully up-to-date in respect to the source.
     ...
 
 
-[See the demo here](http://sinelaw.github.io/simple-grid/demo/index.html).
+[See the demo here](http://bdb-opensource.github.io/simple-grid/demo/index.html).
 
 See the `demo` directory in the source for the demo's source, 

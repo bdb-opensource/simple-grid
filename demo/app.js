@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('demo', ['simpleGrid'])
-        .controller('MainCtrl', function ($scope) {
+        .controller('MainCtrl', function ($scope, $filter) {
             // an example grid config
             $scope.gridConfig = {
                 options: {
@@ -13,6 +13,8 @@
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
                     rowSelected: function (row) { console.log('selected:', row); },
+                    orderBy: 'age',
+                    reverseOrder: false,
                     editable: true, // true is the default
                     disabled: false,
                     columns: [
@@ -37,6 +39,12 @@
                             disabled: true
                         },
                         {
+                            field: 'dateOfBirth',
+                            title: 'Date of Birth',
+                            inputType: 'date',
+                            formatter: function (value) { return $filter('date')(value, 'MM/dd/yyyy'); }
+                        },
+                        {
                             field: 'approved',
                             title: 'Approved?',
                             inputType: 'checkbox'
@@ -55,12 +63,16 @@
                             required: true
                         },
                         {
-                            field: 'inputType',
-                            inputType: 'select',
-                            options: ['text', 'number', 'select', 'checkbox']
+                            field: 'title'
                         },
                         {
-                            field: 'title'
+                            field: 'inputType',
+                            inputType: 'select',
+                            options: ['text', 'number', 'select', 'checkbox', 'date']
+                        },
+                        {
+                            field: 'dateFormat',
+                            inputType: 'text'
                         },
                         {
                             field: 'required',
@@ -75,8 +87,8 @@
                 getData: function () { return $scope.gridConfig.options.columns; }
             };
 
-            $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk', approved: false },
-                            { name: 'schmo', age: 100, food: 'Steak', approved: true }
+            $scope.data = [ { name: 'joe', age: 1, sex: 1, food: 'Milk', dateOfBirth: '1993-07-27T22:33:59+04:00', approved: false },
+                            { name: 'schmo', age: 100, food: 'Steak', dateOfBirth: '2008-10-31T11:54:46+04:00', approved: true }
                           ];
             // an empty grid: same options, no data.
             $scope.emptyData = [];
@@ -101,6 +113,14 @@
                 });
                 return JSON.stringify(filteredObj, undefined, '    ');
             };
+
+            $scope.addRow = function() {
+                $scope.gridConfig.getData().push(
+                    {
+                        $added: true
+                    }
+                )
+            }
         });
 
 }());
