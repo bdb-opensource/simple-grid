@@ -75,7 +75,7 @@
                             targetRowIndex = rowIndex - 1;
                             break;
                         }
-                        if (targetRowIndex) {
+                        if (null !== targetRowIndex) {
                             elem = document.getElementById(scope.formName(targetRowIndex));
                         }
                         if (!elem) {
