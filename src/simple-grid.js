@@ -15,6 +15,9 @@
                         scope.selectedRow = null;
                         scope.focusedRow = null;
                         scope.gridNum = gridNum;
+                        scope.$watch('simpleGrid.getData()', function (newVal) {
+                            scope.data = newVal;
+                        });
                         scope.$watch('simpleGrid.options.editable', function () {
                             scope.gridIsEditable = scope.isEditable();
                         });
