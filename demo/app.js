@@ -24,7 +24,7 @@
                     rowSelected: function (row) { console.log('selected:', row); },
                     //orderBy: 'age',
                     //reverseOrder: false,
-                    //editable: false, // true is the default
+                    editable: true, // true is the default - set here manually to true to make it easier to bind to in the demo html
                     disabled: false,
                     allowMultiSelect: true,
                     columns: [
