@@ -26,7 +26,9 @@
                    style="cursor:pointer;"
                    ng-keydown="keydown($event, rowIndex, -1)"/>
         </td>
-        <td ng-if="!isEditable()" ng-repeat="column in simpleGrid.options.columns" class="sg-data-cell" ng-switch="column.inputType">
+        <td ng-if="!isEditable()" ng-repeat="column in simpleGrid.options.columns"
+            class="sg-data-cell"
+            ng-switch="column.inputType">
             <!-- non-editable checkbox -->
             <input ng-switch-when="checkbox"
                    type="checkbox"

@@ -108,9 +108,9 @@
                             if (scope.selectedRow && scope.selectedRow.$selected) {
                                 delete scope.selectedRow.$selected;
                             }
-                            scope.selectedRow = row;
                         }
-                        if (!row) {
+                        if (!row || row.$deleted) {
+                            scope.selectedRow = null;
                             return;
                         }
                         row.$selected = true;
@@ -124,6 +124,16 @@
                         if (scope.focusedRow && scope.focusedRow.$focused) {
                             delete scope.focusedRow.$focused;
                         }
+
+                        if (!scope.simpleGrid.options.editable) {
+                            if (scope.simpleGrid.options.allowMultiSelect) {
+                                scope.toggleRowSelected(row);
+                            } else {
+                                scope.selectRow(row);
+                            }
+                            return;
+                        }
+
                         if (row) {
                             row.$focused = true;
                         }
