@@ -2,7 +2,16 @@ table.simple-grid > tbody > tr > td > select
 {
     background-color: transparent;
 }
-table.simple-grid > tbody > tr > td > input
+
+table.simple-grid > tbody > tr > td > span {
+    padding: 7px 6px;
+    vertical-align: middle;
+    height: 34px;
+    display: block;
+}
+
+table.simple-grid > tbody > tr.not-editable > td > input
+, table.simple-grid > tbody > tr.not-editable > td > span
 /*, table.simple-grid > tbody > tr > td > select */
 {
     margin: 0;
@@ -14,9 +23,23 @@ table.simple-grid > tbody > tr > td > input
     width: 100%;
 }
 
+td.sg-multi-select-cell, th.sg-multi-select-cell {
+    width: 30px;
+}
+td.sg-actions-cell, th.sg-actions-cell {
+    width: 90px;
+}
+
+.table.simple-grid >tbody > tr.editable > td {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 table.simple-grid > tbody > tr > td > input[type="checkbox"]
 {
-    width: auto;
+   box-shadow: none;
+   vertical-align: middle;
+   width: auto;
 }
 
 table.simple-grid > tbody > tr > td > input.ng-invalid, 
@@ -53,7 +76,12 @@ table.simple-grid > tbody > tr.deleted > td
     color: #888;
     text-decoration: line-through;
 }
-td.sg-actions-cell .btn {
+table.simple-grid > tbody > tr > td.sg-actions-cell
+, table.simple-grid > tbody > tr > td.sg-actions-cell .btn 
+, .table.simple-grid > tbody > tr > td.sg-actions-cell
+, .table.simple-grid > tbody > tr > td.sg-actions-cell .btn 
+{
+    vertical-align: middle;
     text-decoration: none;
     color: white;
 }

@@ -12,6 +12,14 @@
 
                 link: function (scope, elem, attrs) {
                     
+                    function isEditable(editable) {
+                        $log.debug('isEditable');
+                        if (angular.isUndefined(editable)) {
+                            return true; // editable by default
+                        }
+                        return editable || false;
+                    }
+                    
                     function initialize() {
                         scope.gridNum = gridNum;
                         gridNum += 1;
@@ -29,7 +37,7 @@
                         scope.$watch('simpleGrid.options.pageNum', scope.updatePage);
                         
                         scope.$watch('simpleGrid.options.editable', function (editable) {
-                            scope.gridIsEditable = scope.isEditable(editable);
+                            scope.gridIsEditable = isEditable(editable);
                         });
                         
                         scope.$watch('simpleGrid.options.columns', function (newVal) {
@@ -61,14 +69,6 @@
                         }
                     };
 
-                    scope.isEditable = function (editable) {
-                        $log.debug('isEditable');
-                        if (angular.isUndefined(editable)) {
-                            return true; // editable by default
-                        }
-                        return editable || false;
-                    };
-                    
                     scope.capitalize = function (str) {
                         $log.debug('capitalize');
                         if (!str) {
@@ -85,6 +85,9 @@
                     };
 
                     scope.editRequested = function (row) {
+                        if (scope.simpleGrid.options.perRowEditModeEnabled) {
+                            row.$editable = !(row.$editable || false);
+                        }
                         if (scope.simpleGrid.options.editRequested) {
                             scope.simpleGrid.options.editRequested(row);
                         }

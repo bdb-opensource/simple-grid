@@ -17,7 +17,7 @@
             $scope.gridConfig = {
                 options: {
                     showDeleteButton: true,
-                    showEditButton: false,
+                    showEditButton: true,
                     editRequested: function (row) { console.log('edit request:', row); },
                     rowDeleted: function (row) { console.log('deleted:', row); },
                     cellFocused: function (row, column) { console.log('focused:', row, column); },
@@ -26,8 +26,9 @@
                     //reverseOrder: false,
                     editable: true, // true is the default - set here manually to true to make it easier to bind to in the demo html
                     disabled: false,
+                    perRowEditModeEnabled: true,
                     allowMultiSelect: true,
-                    pageSize: 5,
+                    pageSize: 25,
                     pageNum: 0,
                     columns: [
                         {
