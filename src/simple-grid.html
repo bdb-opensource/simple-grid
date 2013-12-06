@@ -19,8 +19,8 @@
                     added: row.$added, 
                     selected: row.$selected,
                     focused: row.$focused, 
-                    editable: row.$editable || !simpleGrid.options.perRowEditModeEnabled 
-                    not-editable: !row.$editable && simpleGrid.options.perRowEditModeEnabled 
+                    editable: row.$editable || !simpleGrid.options.perRowEditModeEnabled,
+                    'not-editable': !row.$editable && simpleGrid.options.perRowEditModeEnabled 
                   }">
 
         <td ng-if="simpleGrid.options.allowMultiSelect" class="sg-multi-select-cell">

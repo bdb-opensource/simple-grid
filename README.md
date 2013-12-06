@@ -3,10 +3,20 @@
 
 A simple grid (editable table) for AngularJS.
 
-Why another grid?
+## Features
+
+* Multiple edit modes: all cells editable, per-row editing (each row is read-only until changed to edit mode), or uneditable (just a table)
+* Row selection (single or multi-select)
+* Keyboard navigation (up/down in a cell move to same cell in next/previous row)
+* Dynamically updatable configuration object (columns setup, editing modes, etc. - thanks to Angular!)
+
+Of course, the grid support all input types natively supported by browsers, including all of Angular's special validated input types: text, [checkbox](http://docs.angularjs.org/api/ng.directive:input.checkbox), [number](http://docs.angularjs.org/api/ng.directive:input.number), [url](http://docs.angularjs.org/api/ng.directive:input.url), [email](http://docs.angularjs.org/api/ng.directive:input.email) and also [select](http://docs.angularjs.org/api/ng.directive:select) and [textarea](http://docs.angularjs.org/api/ng.directive:textarea).
+
+
+## Why another grid?
 
 * Pure angular, no other dependencies.
-* Works 'angular way' (model binding, form controllers, etc.) to make it natural for integration in an angular app.
+* Works the 'angular way' (model binding, form controllers, etc.) to make it natural for integration in an angular app.
 * Easy to customize - use css with angular's form classes (`ng-invalid`, etc.) - or just copy & change the template html from the source.
 
 
@@ -32,7 +42,7 @@ Javascript:
 
     <script src="path/to/simple-grid.js"></script>
 
-CSS (optional):
+CSS (**optional** - built for Bootstrap 3. You'll probably want to augment or replace it):
 
     <link rel="stylesheet" href="path/to/simple-grid.css" />
 
@@ -89,6 +99,7 @@ Hopefully up-to-date in respect to the source.
                     inputType: 'number', // optional, default = text. one of: text, number, checkbox, select
                     required: false, // optional, default = false
                     disabled: false // optional, default = false
+                    perRowEditModeEnabled: false, // optional, default = false
                     
                     // required if inputType is 'select' - feeds the dropdown
                     // array of objects with {value: , title: } properties
@@ -124,3 +135,23 @@ Hopefully up-to-date in respect to the source.
 [See the demo here](http://bdb-opensource.github.io/simple-grid/demo/index.html).
 
 See the `demo` directory in the source for the demo's source, 
+
+# Performance Tips
+
+Since Angular's performance [deteriorates when there are too many bindings](http://stackoverflow.com/a/18381836/562906), the grid can become quite slow with as few as 20-30 rows, if using drop-downs (or just a slow browser). 
+
+To work around this issue you can:
+
+* Use paging
+* Use per-row editing mode (the grid will use a lot less bindings, since most of the table will be non-editable)
+* Limit the usage of drop-downs
+* Use less columns
+
+
+# Contributing
+
+For bugs or suggestions, use [github issues](https://github.com/bdb-opensource/simple-grid/issues).
+
+Otherwise, just send your pull requests!
+
+

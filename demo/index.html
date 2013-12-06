@@ -74,10 +74,12 @@
                     <code>{{data}}</code>
                 </p>
 
-                <hr/>
                 <h2>Dynamically change the grid config</h2>
                 <input id="editable" type="checkbox" ng-model="gridConfig.options.editable" />
                 <label for="editable">Editable?</label>
+                <input id="perRowEditMode" type="checkbox" ng-disabled="!gridConfig.options.editable" 
+                       ng-model="gridConfig.options.perRowEditModeEnabled" />
+                <label for="perRowEditMode">Per-row edit mode?</label>
                 <input id="allowMultiSelect" type="checkbox" ng-model="gridConfig.options.allowMultiSelect" />
                 <label for="allowMultiSelect">Allow Multi-Select?</label>
 
