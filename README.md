@@ -8,6 +8,7 @@ A simple grid (editable table) for AngularJS.
 * Multiple edit modes: all cells editable, per-row editing (each row is read-only until changed to edit mode), or uneditable (just a table)
 * Row selection (single or multi-select)
 * Keyboard navigation (up/down in a cell move to same cell in next/previous row)
+* Paging support
 * Dynamically updatable configuration object (columns setup, editing modes, etc. - thanks to Angular!)
 
 Of course, the grid support all input types natively supported by browsers, including all of Angular's special validated input types: text, [checkbox](http://docs.angularjs.org/api/ng.directive:input.checkbox), [number](http://docs.angularjs.org/api/ng.directive:input.number), [url](http://docs.angularjs.org/api/ng.directive:input.url), [email](http://docs.angularjs.org/api/ng.directive:input.email) and also [select](http://docs.angularjs.org/api/ng.directive:select) and [textarea](http://docs.angularjs.org/api/ng.directive:textarea).
@@ -145,11 +146,14 @@ Since Angular's performance [deteriorates when there are too many bindings](http
 
 To work around this issue you can:
 
-* Use paging
+* Use paging (see below)
 * Use per-row editing mode (the grid will use a lot less bindings, since most of the table will be non-editable)
 * Limit the usage of drop-downs
 * Use less columns
 
+## Paging
+
+The grid supports paging through the `pageNum` and `pageSize` configuration properties. Currently you have to add the prev/next buttons yourself and wire them up to change the `pageNum` appropriately (see the [demo source](https://github.com/bdb-opensource/simple-grid/tree/master/demo) for an example usage). 
 
 # Contributing
 
