@@ -99,7 +99,6 @@ Hopefully up-to-date in respect to the source.
                     inputType: 'number', // optional, default = text. one of: text, number, checkbox, select
                     required: false, // optional, default = false
                     disabled: false // optional, default = false
-                    perRowEditModeEnabled: false, // optional, default = false
                     
                     // required if inputType is 'select' - feeds the dropdown
                     // array of objects with {value: , title: } properties
@@ -112,14 +111,18 @@ Hopefully up-to-date in respect to the source.
             
             // optional - are the cells in the grid actually editable?
             editable: true,
-            
+
+            // optional, default = false. Relevant only if editable = true.
+            // use together with showEditButton, see below.
+            perRowEditModeEnabled: false, 
+
             // optional - if set to 'true' and editable is true, the grid is editable (cells are input controls) but they are all disabled
             disabled: false,
             
             // optional - will show a 'delete' button at the end of each row
             showDeleteButton: false,
             
-            // optional - will show an 'edit' button at the end of each row
+            // optional - will show an 'edit' button at the end of each row (useful when perRowEditModeEnabled)
             showEditButton: false,
             
             // optional - callbacks for actions on rows
