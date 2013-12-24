@@ -12,6 +12,10 @@
 
                 link: function (scope, elem, attrs) {
 
+                    /**
+                     * @param {boolean} editable
+                     * @returns {boolean}
+                     */
                     function isEditable(editable) {
                         //$log.debug('isEditable');
                         if (angular.isUndefined(editable)) {
@@ -20,6 +24,11 @@
                         return editable || false;
                     }
 
+                    /**
+                     * @param {jQuery.event} event
+                     * @param {number} targetRowIndex
+                     * @param {number} colIndex
+                     */
                     function setFocusedCell(event, targetRowIndex, colIndex) {
                         var elem = null, elems;
                         if (null !== targetRowIndex) {
@@ -88,6 +97,10 @@
                         }
                     };
 
+                    /**
+                     * @param {string} str
+                     * @returns {string}
+                     */
                     scope.capitalize = function (str) {
                         //$log.debug('capitalize');
                         if (!str) {
@@ -112,12 +125,22 @@
                         }
                     };
 
+                    /**
+                     * @param {number} rowIndex
+                     * @returns {boolean}
+                     */
                     scope.isInvalid = function (rowIndex) {
                         //$log.debug('isInvalid', rowIndex);
                         var formCtrl = scope.$eval(scope.formName(rowIndex));
                         return formCtrl.$error;
                     };
 
+
+                    /**
+                     * @param {jQuery.event} event
+                     * @param {number} rowIndex
+                     * @param {number} colIndex
+                     */
                     scope.keydown = function (event, rowIndex, colIndex) {
                         var elem = null, elems,
                             targetRowIndex = null;
@@ -128,10 +151,19 @@
                             case 38: //up
                                 targetRowIndex = rowIndex - 1;
                                 break;
+                            case 13:
+                                event.currentTarget.blur();
+                                event.preventDefault();
+                                return;
                         }
                         setFocusedCell(event, targetRowIndex, colIndex);
                     };
 
+                    /**
+                     * @param row
+                     * @param column
+                     * @returns {string}
+                     */
                     scope.getCellText = function (row, column) {
                         //$log.debug('getCellText');//, row, column);
                         var cellValue = row[column.field];
@@ -144,6 +176,11 @@
                         return cellValue;
                     };
 
+                    /**
+                     * @param options
+                     * @param value
+                     * @returns {string}
+                     */
                     scope.getOptionTitleByValue = function (options, value) {
                         //$log.debug('getOptionTitleByValue');//, options, value);
                         // TODO: Highly ineffecient.
@@ -225,6 +262,13 @@
                         }
                     };
 
+                    /**
+                     * @param {jQuery.event} event
+                     * @param {number} rowIndex
+                     * @param {number} columnIndex
+                     * @param row
+                     * @param column
+                     */
                     scope.startEditingCell = function (event, rowIndex, columnIndex, row, column) {
                         row.$editable = true;
                         $timeout(function() {
@@ -244,6 +288,9 @@
                     scope.formName = (function () {
                         // memoize
                         var formNames = {};
+                        /**
+                         * @returns {string}
+                         */
                         return function (rowIndex) {
                             var existing = formNames[rowIndex];
                             if (!existing) {
@@ -254,6 +301,9 @@
                         };
                     }());
 
+                    /**
+                     * @returns {boolean}
+                     */
                     scope.isOrderByReverse = function () {
                         if (scope.simpleGrid && !angular.isUndefined(scope.simpleGrid.options.reverseOrder)) {
                             return scope.simpleGrid.options.reverseOrder;
