@@ -95,6 +95,7 @@
                              i += 1) {
                             scope.page.push(scope.data[i]);
                         }
+                        scope.page.push({ $editable: true, $isDummy: true });
                     };
 
                     /**
