@@ -28,7 +28,7 @@
                     disabled: false,
                     perRowEditModeEnabled: true,
                     allowMultiSelect: true,
-                    pageSize: 25,
+                    pageSize: 5,
                     pageNum: 0,
                     columns: [
                         {
@@ -137,11 +137,14 @@
             };
 
             $scope.addRow = function () {
-                $scope.gridConfig.getData().push(
+                var data = $scope.gridConfig.getData();
+                data.push(
                     {
-                        $added: true
+                        $added: true,
+                        $editable: true
                     }
                 );
+                $scope.gridConfig.options.pageNum = Math.floor(data.length / $scope.gridConfig.options.pageSize);
             };
         });
 
