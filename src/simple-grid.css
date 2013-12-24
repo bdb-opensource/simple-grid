@@ -112,3 +112,15 @@ table.simple-grid > tbody > tr.focused
 , table.simple-grid > tbody > tr.focused > td {
     background-color: #b0cBfA;
 }
+
+table.simple-grid > tbody > tr.sg-dummy-row,
+table.simple-grid > tbody > tr.sg-dummy-row td,
+table.simple-grid > tbody > tr.sg-dummy-row td * {
+    visibility: hidden;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}

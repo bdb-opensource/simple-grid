@@ -1,6 +1,6 @@
 {
   "name": "simple-grid",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Simple editable table for AngularJS",
   "homepage": "https://github.com/sinelaw/simple-grid",
   "bugs": "https://github.com/sinelaw/simple-grid/issues",
