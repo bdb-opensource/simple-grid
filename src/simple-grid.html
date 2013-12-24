@@ -30,7 +30,7 @@
     <select ng-if="column.inputType === 'select'"
             class="form-control sg-column-{{columnIndex}}"
             ng-model="row[column.field]"
-            ng-required="column.required"
+            ng-required="column.required && !isDummy"
             ng-focus="cellFocused(row, column)"
             ng-blur="cellBlurred(row, column)"
             ng-keydown="keydown($event, rowIndex, columnIndex)"
@@ -41,7 +41,7 @@
            class="form-control sg-column-{{columnIndex}}"
            type="{{ column.inputType || 'text' }}"
            ng-model="row[column.field]"
-           ng-required="column.required"
+           ng-required="column.required && !isDummy"
            placeholder="{{column.placeholder}}"
            ng-focus="cellFocused(row, column)"
            ng-blur="cellBlurred(row, column)"
@@ -121,7 +121,9 @@
         ng-include="'sg-row.html'">
     </tr>
 
-    <tr class="sg-dummy-row" ng-if="simpleGrid.options.perRowEditModeEnabled">
+    <tr class="sg-dummy-row"
+        ng-if="simpleGrid.options.perRowEditModeEnabled"
+        ng-init="isDummy = true">
         <td ng-repeat="column in simpleGrid.options.columns"
             ng-init="columnIndex = $index"
             class="sg-data-cell"
