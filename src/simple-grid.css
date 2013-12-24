@@ -120,5 +120,7 @@ table.simple-grid > tbody > tr.sg-dummy-row td * {
     height: 1px;
     padding: 0;
     margin: 0;
-    border: none;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
 }

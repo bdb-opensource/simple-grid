@@ -95,7 +95,9 @@
                              i += 1) {
                             scope.page.push(scope.data[i]);
                         }
-                        scope.page.push({ $editable: true, $isDummy: true });
+                        if (scope.simpleGrid.options.perRowEditModeEnabled) {
+                            scope.page.push({ $editable: true, $isDummy: true });
+                        }
                     };
 
                     /**
