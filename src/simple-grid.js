@@ -48,6 +48,27 @@
                         }
                     }
 
+                    function getOptionsForSelectColumn(column) {
+                        // TODO: Allow column.options to be a promise
+                        var options = column.options;
+                        if (!options) {
+                            return [];
+                        }
+                        //$log.debug('getOptions');//, options);
+                        if (options.length) {
+                            // TODO: Not compatible with old browsers
+                            return options.map(function (val) {
+                                return {
+                                    value: column.select(val),
+                                    title: column.formatter(val)
+                                };
+                            });
+                        }
+                        return options;
+                    }
+
+                    function identity(x) { return x; }
+
                     function initialize() {
                         scope.gridNum = gridNum;
                         gridNum += 1;
@@ -70,13 +91,16 @@
 
                         scope.$watch('simpleGrid.options.columns', function (newVal) {
                             angular.forEach(newVal, function (column) {
+                                var origFormatter = column.formatter || identity,
+                                    origSelect = column.select || identity;
                                 if (column.inputType === 'select') {
-                                    column.$options = scope.getOptions(column.options);
+                                    column.formatter = function (x) { return x && origFormatter(x); };
+                                    column.select = function (x) { return x && origSelect(x); };
+                                    column.$options = getOptionsForSelectColumn(column);
                                 }
                                 column.$title = column.title || scope.capitalize(column.field);
                             });
                         }, true);
-
                     }
 
                     scope.updatePage = function () {
@@ -168,7 +192,7 @@
                         //$log.debug('getCellText');//, row, column);
                         var cellValue = row[column.field];
                         if (column.inputType === 'select') {
-                            return scope.getOptionTitleByValue(column.options, cellValue);
+                            return column.formatter(scope.getSelectOptionByValue(getOptionsForSelectColumn(column), cellValue));
                         }
                         if (column.formatter) {
                             return column.formatter(cellValue);
@@ -181,7 +205,7 @@
                      * @param value
                      * @returns {string}
                      */
-                    scope.getOptionTitleByValue = function (options, value) {
+                    scope.getSelectOptionByValue = function (options, value) {
                         //$log.debug('getOptionTitleByValue');//, options, value);
                         // TODO: Highly ineffecient.
                         // TODO: Array.prototype.filter is not compatible with older browsers
@@ -192,7 +216,7 @@
                             // TODO: Write a log indicating that the value was not found.
                             return value;
                         }
-                        return filteredOptions[0].title;
+                        return filteredOptions[0];
                     };
 
                     scope.toggleRowSelected = function (row) {
@@ -274,15 +298,6 @@
                         $timeout(function() {
                             setFocusedCell(null, rowIndex, columnIndex);
                         });
-                    };
-
-                    scope.getOptions = function (options) {
-                        //$log.debug('getOptions');//, options);
-                        if (options.length && angular.isString(options[0])) {
-                            // TODO: Not compatible with old browsers
-                            return options.map(function (val) { return { value: val, title: scope.capitalize(val) }; });
-                        }
-                        return options;
                     };
 
                     scope.formName = (function () {

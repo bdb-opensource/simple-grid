@@ -18,13 +18,10 @@
             overflow:auto;
         }
         .grid-container {
-            height: 320px; overflow-y: auto;
+            height: 340px; overflow-y: auto;
         }
         .grid-container table {
             margin: 0;
-        }
-        .simple-grid {
-            table-layout:fixed;
         }
     </style>
 </head>
@@ -42,8 +39,10 @@
                 <h2>Example Usage</h2>
                 <h3>Configuration</h3>
                 <pre class="pre-scrollable" style="max-height: 200px">{{pretty(gridConfig.options)}}</pre>
-                <h3>Resulting Grid</h3>
-                <div simple-grid="gridConfig" class="grid-container"></div>
+                <div ng-form="gridForm">
+                    <h3>Resulting Grid <small>Modified? {{ gridForm.$pristine ? 'No' : 'Yes' }}</small></h3>
+                    <div simple-grid="gridConfig" class="grid-container"></div>
+                </div>
                 <div style="text-align:center">
                     Page: {{ gridConfig.options.pageNum + 1 }}
                     <div class="btn-group">
@@ -77,11 +76,11 @@
                 <label for="allowMultiSelect">Allow Multi-Select?</label>
 
                 <h4>Columns</h4>
-                <div simple-grid="metaGridConfig"></div>
+                <!--<div simple-grid="metaGridConfig"></div>-->
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.js"></script>
     <script src="../src/simple-grid.js"></script>
     <!--    <script src="../src/scalyr.js"></script>-->
     <script src="app.js"></script>
