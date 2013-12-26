@@ -50,7 +50,8 @@
 
                     function getOptionsForSelectColumn(column) {
                         // TODO: Allow column.options to be a promise
-                        var options = column.options;
+                        var options = column.options,
+                            select = applyIfTruthy(column.select || identity);
                         if (!options) {
                             return [];
                         }
@@ -59,15 +60,32 @@
                             // TODO: Not compatible with old browsers
                             return options.map(function (val) {
                                 return {
-                                    value: column.select(val),
-                                    title: column.formatter(val)
+                                    value: select(val),
+                                    title: getColumnFormatter(column)(val)
                                 };
                             });
                         }
                         return options;
                     }
 
-                    function identity(x) { return x; }
+                    function identity(x) {
+                        return x;
+                    }
+
+                    function applyIfTruthy(func) {
+                        return function (x) {
+                            return x && func(x);
+                        };
+                    }
+
+                    // TODO: Don't actually change the column object. Instead, store all internal data in some dictionary of sorts.
+                    function setColumnFormatter(column, formatter) {
+                        column.$formatter = formatter;
+                    }
+
+                    function getColumnFormatter(column) {
+                        return column.$formatter;
+                    }
 
                     function initialize() {
                         scope.gridNum = gridNum;
@@ -91,11 +109,8 @@
 
                         scope.$watch('simpleGrid.options.columns', function (newVal) {
                             angular.forEach(newVal, function (column) {
-                                var origFormatter = column.formatter || identity,
-                                    origSelect = column.select || identity;
+                                setColumnFormatter(column, applyIfTruthy(column.formatter || identity));
                                 if (column.inputType === 'select') {
-                                    column.formatter = function (x) { return x && origFormatter(x); };
-                                    column.select = function (x) { return x && origSelect(x); };
                                     column.$options = getOptionsForSelectColumn(column);
                                 }
                                 column.$title = column.title || scope.capitalize(column.field);
@@ -192,12 +207,9 @@
                         //$log.debug('getCellText');//, row, column);
                         var cellValue = row[column.field];
                         if (column.inputType === 'select') {
-                            return column.formatter(scope.getSelectOptionByValue(getOptionsForSelectColumn(column), cellValue));
+                            return getColumnFormatter(column)(scope.getSelectOptionByValue(getOptionsForSelectColumn(column), cellValue));
                         }
-                        if (column.formatter) {
-                            return column.formatter(cellValue);
-                        }
-                        return cellValue;
+                        return getColumnFormatter(column)(cellValue);
                     };
 
                     /**
@@ -295,7 +307,7 @@
                      */
                     scope.startEditingCell = function (event, rowIndex, columnIndex, row, column) {
                         row.$editable = true;
-                        $timeout(function() {
+                        $timeout(function () {
                             setFocusedCell(null, rowIndex, columnIndex);
                         });
                     };

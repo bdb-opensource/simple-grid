@@ -27,6 +27,7 @@
 </script>
 
 <script id="sg-editable-cell.html" type="text/ng-template">
+
     <select ng-if="column.inputType === 'select'"
             class="form-control sg-column-{{columnIndex}}"
             ng-model="row[column.field]"
@@ -35,7 +36,8 @@
             ng-blur="cellBlurred(row, column)"
             ng-keydown="keydown($event, rowIndex, columnIndex)"
             ng-disabled="((row.$deleted || simpleGrid.options.disabled) || column.disabled)"
-            ng-options="option.value as option.title for option in column.$options"/>
+            ng-options="option.value as option.title for option in column.$options">
+    </select>
 
     <input ng-if="column.inputType !== 'select'"
            class="form-control sg-column-{{columnIndex}}"
