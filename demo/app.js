@@ -12,7 +12,7 @@
     }
     
     angular.module('demo', ['simpleGrid'])
-        .controller('MainCtrl', function ($scope, $filter) {
+        .controller('MainCtrl', function ($scope, $filter, $log) {
             // an example grid config
             $scope.gridConfig = {
                 options: {
@@ -30,6 +30,7 @@
                     allowMultiSelect: true,
                     pageSize: 5,
                     pageNum: 0,
+                    dynamicColumns: true,
                     columns: [
                         {
                             field: 'name',
@@ -43,7 +44,9 @@
                         {
                             field: 'sex',
                             inputType: 'select',
-                            options: [{ value: 0, title: 'Male'}, { value: 1, title: 'Female'}]
+                            options: [{ value: 0, title: 'Male'}, { value: 1, title: 'Female'}],
+                            formatter: function(item) { return item.title; },
+                            select: function(item) { return item.value; }
                         },
                         {
                             field: 'food',
@@ -100,8 +103,8 @@
                 getData: function () { return $scope.gridConfig.options.columns; }
             };
 
-            $scope.data = [ { name: 'Jooka', age: 1, sex: 1, food: 'Cookies', dateOfBirth: '1993-07-27T22:33:59+04:00', approved: false },
-                            { name: 'Schmo', age: 100, food: 'Steak', dateOfBirth: '2008-10-31T11:54:46+04:00', approved: true },
+            $scope.data = [ { name: 'Jooka', age: 1, sex: 0, food: 'Cookies', dateOfBirth: '1993-07-27T22:33:59+04:00', approved: false },
+                            { name: 'Schmo', age: 100, sex: 1, food: 'Steak', dateOfBirth: '2008-10-31T11:54:46+04:00', approved: true },
                             { name: 'Sparky', age: 43, food: 'Cereal', dateOfBirth: '2003-04-31T11:54:46+04:00', approved: false }
                           ];
             
