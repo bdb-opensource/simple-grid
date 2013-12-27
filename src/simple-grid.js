@@ -87,7 +87,18 @@
                         return column.$formatter;
                     }
 
+                    function recalculateColumns(columns) {
+                        angular.forEach(columns, function (column) {
+                            setColumnFormatter(column, applyIfTruthy(column.formatter || identity));
+                            if (column.inputType === 'select') {
+                                column.$options = getOptionsForSelectColumn(column);
+                            }
+                            column.$title = column.title || scope.capitalize(column.field);
+                        });
+                    }
+
                     function initialize() {
+                        var columnsWatcherDeregister;
                         scope.gridNum = gridNum;
                         gridNum += 1;
 
@@ -107,15 +118,16 @@
                             scope.gridIsEditable = isEditable(editable);
                         });
 
-                        scope.$watch('simpleGrid.options.columns', function (newVal) {
-                            angular.forEach(newVal, function (column) {
-                                setColumnFormatter(column, applyIfTruthy(column.formatter || identity));
-                                if (column.inputType === 'select') {
-                                    column.$options = getOptionsForSelectColumn(column);
-                                }
-                                column.$title = column.title || scope.capitalize(column.field);
-                            });
-                        }, true);
+                        scope.$watch('simpleGrid.options.dynamicColumns', function (newVal) {
+                            columnsWatcherDeregister && columnsWatcherDeregister();
+                            if (newVal) {
+                                columnsWatcherDeregister = scope.$watch('simpleGrid.options.columns', recalculateColumns, true);
+                            } else {
+                                columnsWatcherDeregister = scope.$watchCollection('simpleGrid.options.columns', recalculateColumns);
+                            }
+                        });
+
+                        recalculateColumns();
                     }
 
                     scope.updatePage = function () {

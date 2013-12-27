@@ -30,6 +30,7 @@
                     allowMultiSelect: true,
                     pageSize: 5,
                     pageNum: 0,
+                    dynamicColumns: true,
                     columns: [
                         {
                             field: 'name',
