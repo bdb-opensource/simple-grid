@@ -207,7 +207,7 @@
                         //$log.debug('getCellText');//, row, column);
                         var cellValue = row[column.field];
                         if (column.inputType === 'select') {
-                            return getColumnFormatter(column)(scope.getSelectOptionByValue(getOptionsForSelectColumn(column), cellValue));
+                            return getColumnFormatter(column)(scope.getSelectOptionByValue(column.$options, cellValue));
                         }
                         return getColumnFormatter(column)(cellValue);
                     };
