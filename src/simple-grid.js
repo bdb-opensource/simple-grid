@@ -87,6 +87,15 @@
                         return column.$formatter;
                     }
 
+                    function setRowSelected(row, isSelected) {
+                        if (isSelected) {
+                            row.$selected = true;
+                        }
+                        else {
+                            delete row.$selected;
+                        }
+                    }
+
                     function recalculateColumns(columns) {
                         angular.forEach(columns, function (column) {
                             setColumnFormatter(column, applyIfTruthy(column.formatter || identity));
@@ -245,7 +254,7 @@
 
                     scope.toggleRowSelected = function (row) {
                         if (row && row.$selected) {
-                            delete row.$selected;
+                            setRowSelected(row, false);
                             scope.selectRow(null);
                         } else {
                             scope.selectRow(row);
@@ -263,7 +272,7 @@
                             scope.selectedRow = null;
                             return;
                         }
-                        row.$selected = true;
+                        setRowSelected(row, true);
                         scope.selectedRow = row;
 
                         if (scope.simpleGrid.options.rowSelected) {
@@ -295,12 +304,15 @@
                         scope.focusedRow = row;
                     };
 
-                    scope.cellBlurred = function (row, column) {
+                    scope.cellBlurred = function (event, row, column) {
                         scope.setFocusedRow(null);
                     };
 
-                    scope.cellFocused = function (row, column) {
+                    scope.cellFocused = function (event, row, column) {
                         //$log.debug('cellFocused', row, column);
+                        if (event.currentTarget.type === 'checkbox') {
+                            return;
+                        }
                         scope.setFocusedRow(row);
                         if (!scope.simpleGrid.options.allowMultiSelect) {
                             scope.selectRow(row);
