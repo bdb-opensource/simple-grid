@@ -3,7 +3,7 @@
     'use strict';
 
     angular.module('simpleGrid', [])//['sly'])
-        .directive('simpleGrid', function ($timeout, $log) {
+        .directive('simpleGrid', ['$timeout', '$log', function ($timeout, $log) {
             var gridNum = 0;
             return {
                 scope: {
@@ -128,7 +128,7 @@
                         });
 
                         scope.$watch('simpleGrid.options.dynamicColumns', function (newVal) {
-                            columnsWatcherDeregister && columnsWatcherDeregister();
+                            if (columnsWatcherDeregister) { columnsWatcherDeregister(); }
                             if (newVal) {
                                 columnsWatcherDeregister = scope.$watch('simpleGrid.options.columns', recalculateColumns, true);
                             } else {
@@ -369,5 +369,5 @@
                     return document.getElementById('simple-grid.html').getAttribute('src');
                 }
             };
-        });
+        }]);
 }());
