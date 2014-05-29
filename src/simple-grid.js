@@ -234,6 +234,15 @@
                     };
 
                     /**
+                     * @param row
+                     * @param column
+                     * @returns {string}
+                     */
+                    scope.getCellHref = function (row, column) {
+                        return column.getUrl(row);
+                    };
+
+                    /**
                      * @param options
                      * @param value
                      * @returns {string}

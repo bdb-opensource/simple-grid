@@ -76,11 +76,12 @@
                type="checkbox"
                ng-checked="row[column.field]"
                disabled="disabled"
-               class="form-control"
-                />
-            <span ng-switch-default="">
-                {{getCellText(row, column)}}
-            </span>
+               class="form-control"/>
+        <!-- non-editable text -->
+        <span ng-switch-default>
+            <a ng-if="column.getUrl" href="{{getCellHref(row, column)}}">{{getCellText(row, column)}}</a>
+            <span ng-if="!column.getUrl">{{getCellText(row, column)}}</span>
+        </span>
     </td>
 
     <td ng-if="gridIsEditable && (!simpleGrid.options.perRowEditModeEnabled || row.$editable)"

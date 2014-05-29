@@ -35,6 +35,7 @@
                         {
                             field: 'name',
                             // no inputType -> default is text
+                            getUrl: function(row) { return '#/' + row.age; },
                             required: true
                         },
                         {
