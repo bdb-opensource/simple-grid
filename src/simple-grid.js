@@ -11,19 +11,6 @@
                 },
 
                 link: function (scope, elem, attrs) {
-
-                    /**
-                     * @param {boolean} editable
-                     * @returns {boolean}
-                     */
-                    function isEditable(editable) {
-                        //$log.debug('isEditable');
-                        if (angular.isUndefined(editable)) {
-                            return true; // editable by default
-                        }
-                        return editable || false;
-                    }
-
                     /**
                      * @param {jQuery.event} event
                      * @param {number} targetRowIndex
@@ -48,45 +35,6 @@
                         }
                     }
 
-                    function getOptionsForSelectColumn(column) {
-                        // TODO: Allow column.options to be a promise
-                        var options = column.options,
-                            select = applyIfTruthy(column.select || identity);
-                        if (!options) {
-                            return [];
-                        }
-                        //$log.debug('getOptions');//, options);
-                        if (options.length) {
-                            // TODO: Not compatible with old browsers
-                            return options.map(function (val) {
-                                return {
-                                    value: select(val),
-                                    title: getColumnFormatter(column)(val)
-                                };
-                            });
-                        }
-                        return options;
-                    }
-
-                    function identity(x) {
-                        return x;
-                    }
-
-                    function applyIfTruthy(func) {
-                        return function (x) {
-                            return x && func(x);
-                        };
-                    }
-
-                    // TODO: Don't actually change the column object. Instead, store all internal data in some dictionary of sorts.
-                    function setColumnFormatter(column, formatter) {
-                        column.$formatter = formatter;
-                    }
-
-                    function getColumnFormatter(column) {
-                        return column.$formatter;
-                    }
-
                     function setRowSelected(row, isSelected) {
                         if (isSelected) {
                             row.$selected = true;
@@ -95,67 +43,6 @@
                             delete row.$selected;
                         }
                     }
-
-                    function recalculateColumns(columns) {
-                        angular.forEach(columns, function (column) {
-                            setColumnFormatter(column, applyIfTruthy(column.formatter || identity));
-                            if (column.inputType === 'select') {
-                                column.$options = getOptionsForSelectColumn(column);
-                            }
-                            column.$title = column.title || scope.capitalize(column.field);
-                        });
-                    }
-
-                    function initialize() {
-                        var columnsWatcherDeregister;
-                        scope.gridNum = gridNum;
-                        gridNum += 1;
-
-                        scope.page = [];
-                        scope.selectedRow = null;
-                        scope.focusedRow = null;
-
-                        scope.$watchCollection('simpleGrid.getData()', function (newVal) {
-                            scope.data = newVal;
-                            scope.updatePage();
-                        });
-
-                        scope.$watch('simpleGrid.options.pageSize', scope.updatePage);
-                        scope.$watch('simpleGrid.options.pageNum', scope.updatePage);
-
-                        scope.$watch('simpleGrid.options.editable', function (editable) {
-                            scope.gridIsEditable = isEditable(editable);
-                        });
-
-                        scope.$watch('simpleGrid.options.dynamicColumns', function (newVal) {
-                            if (columnsWatcherDeregister) { columnsWatcherDeregister(); }
-                            if (newVal) {
-                                columnsWatcherDeregister = scope.$watch('simpleGrid.options.columns', recalculateColumns, true);
-                            } else {
-                                columnsWatcherDeregister = scope.$watchCollection('simpleGrid.options.columns', recalculateColumns);
-                            }
-                        });
-
-                        recalculateColumns();
-                    }
-
-                    scope.updatePage = function () {
-                        var i,
-                            pageSize,
-                            pageStart;
-                        scope.page.length = 0;
-                        if (!scope.data) {
-                            return;
-                        }
-                        pageSize = scope.simpleGrid.options.pageSize || scope.data.length;
-                        pageStart = (scope.simpleGrid.options.pageNum || 0) * pageSize;
-                        for (i = pageStart;
-                             i < Math.min(pageStart + pageSize,
-                                 scope.data.length);
-                             i += 1) {
-                            scope.page.push(scope.data[i]);
-                        }
-                    };
 
                     /**
                      * @param {string} str
@@ -170,20 +57,59 @@
                     };
 
                     scope.toggleDeleted = function (row) {
+                        // revert row
+                        if (row.$editable) {
+                            var backupRow = scope.backupRow.pop();
+                            for (var key in row) {
+                                row[key] = backupRow[key];
+                            }
+                            row.$editable = false;
+                            return;
+                        }
+
+                        // delete row
                         row.$deleted = !(row.$deleted || false);
                         if (row.$deleted && scope.simpleGrid.options && scope.simpleGrid.options.rowDeleted) {
                             scope.simpleGrid.options.rowDeleted(row);
                         }
                     };
 
+                    scope.toggleAdd = function (row) {
+                        if (isRequiredFieldsEmpty(row)) {
+                            scope.onError = true;
+                            return;
+                        }
+                        scope.onError = false;
+                        scope.simpleGrid.options.rowAdded(row);
+                        scope.row = {};
+                    };
+
                     scope.editRequested = function (row) {
+                        // if is there any required field empty
+                        if (row.$editable && isRequiredFieldsEmpty(row)) return;
+
                         if (scope.simpleGrid.options.perRowEditModeEnabled) {
                             row.$editable = !(row.$editable || false);
                         }
-                        if (scope.simpleGrid.options.editRequested) {
+                        if (!scope.simpleGrid.options.editRequested) return;
+
+                        if (!row.$editable)
                             scope.simpleGrid.options.editRequested(row);
-                        }
+                        else // do a backup of row
+                            scope.backupRow.push(angular.copy(row));
                     };
+
+                    function isRequiredFieldsEmpty(row) {
+                        if (!Object.keys(row).length) return true;
+                        var columns = scope.simpleGrid.options.columns;
+
+                        return columns.some(function (item) {
+                            if (validateFunction(item.required)(row)) {
+                                if (row[item.field] === undefined)
+                                    return true;
+                            }
+                        });
+                    }
 
                     /**
                      * @param {number} rowIndex
@@ -224,41 +150,8 @@
                      * @param column
                      * @returns {string}
                      */
-                    scope.getCellText = function (row, column) {
-                        //$log.debug('getCellText');//, row, column);
-                        var cellValue = row[column.field];
-                        if (column.inputType === 'select') {
-                            return getColumnFormatter(column)(scope.getSelectOptionByValue(column.$options, cellValue));
-                        }
-                        return getColumnFormatter(column)(cellValue);
-                    };
-
-                    /**
-                     * @param row
-                     * @param column
-                     * @returns {string}
-                     */
                     scope.getCellHref = function (row, column) {
                         return column.getUrl(row);
-                    };
-
-                    /**
-                     * @param options
-                     * @param value
-                     * @returns {string}
-                     */
-                    scope.getSelectOptionByValue = function (options, value) {
-                        //$log.debug('getOptionTitleByValue');//, options, value);
-                        // TODO: Highly ineffecient.
-                        // TODO: Array.prototype.filter is not compatible with older browsers
-                        var filteredOptions = options.filter(function (option) {
-                            return option.value === value;
-                        });
-                        if (!filteredOptions.length) {
-                            // TODO: Write a log indicating that the value was not found.
-                            return value;
-                        }
-                        return filteredOptions[0];
                     };
 
                     scope.toggleRowSelected = function (row) {
@@ -361,15 +254,152 @@
                         };
                     }());
 
-                    /**
-                     * @returns {boolean}
-                     */
                     scope.isOrderByReverse = function () {
                         if (scope.simpleGrid && !angular.isUndefined(scope.simpleGrid.options.reverseOrder)) {
                             return scope.simpleGrid.options.reverseOrder;
                         }
                         return false;
                     };
+
+                    scope.movePage = function (offset) {
+                        var pagesCount = scope.page.length;
+
+                        scope.simpleGrid.options.pageNum += offset;
+                        scope.simpleGrid.options.pageNum = Math.max(0, scope.simpleGrid.options.pageNum);
+                        scope.simpleGrid.options.pageNum = Math.min(pagesCount, scope.simpleGrid.options.pageNum);
+                    };
+
+                    scope.updatePage = function () {
+                        var i, pageSize, pageStart;
+                        scope.page.length = 0;
+
+                        if (!scope.data) {
+                            return;
+                        }
+
+                        pageSize = scope.simpleGrid.options.pageSize || scope.data.length;
+                        pageStart = (scope.simpleGrid.options.pageNum || 0) * pageSize;
+
+                        for (i = pageStart;
+                            i < Math.min(pageStart + pageSize, scope.data.length);
+                            i += 1) {
+                            scope.page.push(scope.data[i]);
+                        }
+                    };
+                    
+                    scope.getSelectOptionByValue = function (options, value) {
+                        if (!options) return value;
+
+                        var filteredOptions = options.filter(function (option) {
+                            return option.value === value;
+                        });
+
+                        if (!filteredOptions.length) {
+                            // TODO: Write a log indicating that the value was not found.
+                            return value;
+                        }
+                        return filteredOptions[0].title;
+                    };
+
+                    scope.getCellText = function (row, column) {
+                        //$log.debug('getCellText');//, row, column);
+                        var cellValue = row[column.field];
+
+                        // Hard Code
+                        if (column.inputType === 'select') {
+                            cellValue = scope.getSelectOptionByValue(column.$options(row), cellValue);
+                        }
+
+                        return column.$formatter(cellValue, row);
+                    };
+
+                    scope.log = function (item) {
+                        console.log(item);
+                    }
+
+                    function validateFunction(f) {
+                        var getType = {};
+
+                        // if 'f' is a function
+                        if (f && getType.toString.call(f) === '[object Function]')
+                            return f;
+
+                        // return 'f' if it's a value or return first argument if it's not an object
+                        // because if it's an object that means it's the row object
+                        return function (x) {
+                            return f !== undefined ? f : (typeof (x) !== 'object' ? x : undefined);
+                        };
+                    }
+
+                    function getOptionsForSelectColumn(column) {
+                        // TODO: Allow column.options to be a promise
+                        var options = column.options;
+
+                        if (!options) {
+                            return [];
+                        }
+
+                        if (options.length) {
+                            // TODO: Not compatible with old browsers
+                            return options.map(function (val) {
+                                return {
+                                    value: val.value,//column.$select(val.value),
+                                    title: column.$formatter(val.title)
+                                };
+                            });
+                        }
+                        return options;
+                    }
+
+                    function recalculateColumns(columns) {
+                        angular.forEach(columns, function (column) {
+                            column.$title = column.title || scope.capitalize(column.field);
+                            column.$formatter = validateFunction(column.formatter);
+                            column.$disabled = validateFunction(column.disabled);
+                            column.$required = validateFunction(column.required);
+                            column.$options = validateFunction(column.options);
+                            //column.$select = validateFunction(column.select);
+                        });
+                    }
+
+                    function initialize() {
+                        var columnsWatcherDeregister;
+                        scope.gridNum = gridNum;
+                        gridNum += 1;
+
+                        scope.row = {};
+                        scope.backupRow = [];
+
+                        scope.page = [];
+                        scope.selectedRow = null;
+                        scope.focusedRow = null;
+
+                        scope.$watchCollection('simpleGrid.getData()', function (newVal) {
+                            scope.data = newVal;
+                            scope.updatePage();
+                        });
+
+                        scope.$watch('simpleGrid.options.pageSize', scope.updatePage);
+                        scope.$watch('simpleGrid.options.pageNum', scope.updatePage);
+
+                        scope.$watch('simpleGrid.options.editable', function (editable) {
+                            scope.gridIsEditable = function (editable) {
+                                if (angular.isUndefined(editable)) {
+                                    return true; // editable by default
+                                }
+                                return editable || false;
+                            };
+                        });
+
+                        scope.$watch('simpleGrid.options.dynamicColumns', function (newVal) {
+                            if (columnsWatcherDeregister) { columnsWatcherDeregister(); }
+                            if (newVal) {
+                                columnsWatcherDeregister = scope.$watch('simpleGrid.options.columns', recalculateColumns, true);
+                            } else {
+                                columnsWatcherDeregister = scope.$watchCollection('simpleGrid.options.columns', recalculateColumns);
+                            }
+                        });
+                    }
 
                     initialize();
                 },

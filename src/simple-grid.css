@@ -1,6 +1,17 @@
+table.simple-grid 
+{
+    vertical-align: middle;
+}
+
+table.simple-grid > tbody > tr > td:focus {    
+    outline: 0;
+    outline: none;
+}
+
 table.simple-grid > tbody > tr > td > select 
 {
-    background-color: transparent;
+    background-color: white;
+    cursor: pointer;
 }
 
 table.simple-grid > tbody > tr > td > span {
@@ -14,20 +25,22 @@ table.simple-grid > tbody > tr.not-editable > td > input
 , table.simple-grid > tbody > tr.not-editable > td > span
 /*, table.simple-grid > tbody > tr > td > select */
 {
-    margin: 0;
+    /*margin: auto;*/
+    display: table-cell;
     border: none;
     background-color: transparent;
     box-shadow: none;
     padding-left: 7px;
     padding-right: 7px;
-    width: 100%;
+    /*width: 100%;*/
 }
 
 td.sg-multi-select-cell, th.sg-multi-select-cell {
     width: 30px;
 }
 td.sg-actions-cell, th.sg-actions-cell {
-    width: 90px;
+    width: 100px;
+    text-align: center;
 }
 
 .table.simple-grid >tbody > tr.editable > td {
@@ -35,11 +48,12 @@ td.sg-actions-cell, th.sg-actions-cell {
     padding-right: 0;*/
 }
 
-table.simple-grid > tbody > tr > td > input[type="checkbox"]
-{
-   box-shadow: none;
-/*   vertical-align: middle;*/
-   width: auto;
+table.simple-grid > tbody > tr > td > input[type="checkbox"],
+table.simple-grid > tbody > tr > td > div > input[type="checkbox"] {
+    box-shadow: none;
+    vertical-align: middle;
+    text-align: center;
+    width: auto;
 }
 
 table.simple-grid > tbody > tr > td > input.ng-invalid, 
@@ -123,4 +137,33 @@ table.simple-grid > tbody > tr.sg-dummy-row td * {
     border-bottom: none;
     border-left: none;
     border-right: none;
+}
+
+table input[type="number"]::-webkit-outer-spin-button,
+table input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+table input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+table input[type="time"]::-webkit-outer-spin-button,
+table input[type="time"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+table input[type="time"]::-webkit-clear-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+table input[type="time"] {
+    -moz-appearance: textfield;
+}
+
+.alert.alert-danger {
+    background-color: #f2dede !important;
 }

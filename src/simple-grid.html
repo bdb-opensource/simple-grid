@@ -27,33 +27,38 @@
 </script>
 
 <script id="sg-editable-cell.html" type="text/ng-template">
+    <div ng-switch="column.inputType">
+        <select ng-switch-when="select"
+                class="form-control sg-column-{{columnIndex}}"
+                ng-model="row[column.field]"
+                ng-required="column.$required(row) && !isDummy"
+                ng-focus="cellFocused($event, row, column); options = column.$options(row)"
+                ng-blur="cellBlurred($event, row, column)"
+                ng-keydown="keydown($event, rowIndex, columnIndex)"
+                ng-disabled="((row.$deleted || simpleGrid.options.disabled) || column.$disabled(row))"
+                ng-init="options = column.$options(row)"
+                ng-options="option.value as option.title for option in options"></select>
 
-    <select ng-if="column.inputType === 'select'"
-            class="form-control sg-column-{{columnIndex}}"
-            ng-model="row[column.field]"
-            ng-required="column.required && !isDummy"
-            ng-focus="cellFocused($event, row, column)"
-            ng-blur="cellBlurred($event, row, column)"
-            ng-keydown="keydown($event, rowIndex, columnIndex)"
-            ng-disabled="((row.$deleted || simpleGrid.options.disabled) || column.disabled)"
-            ng-options="option.value as option.title for option in column.$options">
-    </select>
+        <div ng-switch-when="custom-template">
+            <div ng-include="column.inputTemplate"></div>
+        </div>
 
-    <input ng-if="column.inputType !== 'select'"
-           class="form-control sg-column-{{columnIndex}}"
-           type="{{ column.inputType || 'text' }}"
-           ng-model="row[column.field]"
-           ng-required="column.required && !isDummy"
-           placeholder="{{column.placeholder}}"
-           ng-focus="cellFocused($event, row, column)"
-           ng-blur="cellBlurred($event, row, column)"
-           ng-keydown="keydown($event, rowIndex, columnIndex)"
-           ng-readonly="((row.$deleted || simpleGrid.options.disabled) || column.disabled)"
-            />
+        <input ng-switch-default
+               class="form-control sg-column-{{columnIndex}}"
+               type="{{ column.inputType || 'text' }}"
+               ng-model="row[column.field]"
+               ng-required="column.$required(row) && !isDummy"
+               placeholder="{{column.placeholder}}"
+               ng-focus="cellFocused($event, row, column)"
+               ng-blur="cellBlurred($event, row, column)"
+               ng-keydown="keydown($event, rowIndex, columnIndex)"
+               ng-readonly="((row.$deleted || simpleGrid.options.disabled) || column.$disabled(row))" />
+    </div>
 </script>
 
 <script id="sg-row.html" type="text/ng-template">
     <td ng-if="simpleGrid.options.allowMultiSelect"
+        ng-hide="true" <!-- hide this and stop bug -->
         class="sg-multi-select-cell">
         <input class="form-control sg-column--1"
                type="checkbox"
@@ -61,7 +66,7 @@
                ng-focus="cellFocused($event, row, null)"
                ng-blur="cellBlurred($event, row, null)"
 			   ng-checked="row.$selected"
-               style="cursor:pointer;"
+               style="cursor: pointer"
                ng-keydown="keydown($event, rowIndex, -1)"/>
     </td>
             
@@ -96,49 +101,84 @@
     </td>
 </script>
 
-<table class="table table-striped simple-grid">
+<!--<h1>test</h1>-->
+<table class="table table-hover table-striped simple-grid">
 
     <thead>
     <tr>
-        <th ng-if="simpleGrid.options.allowMultiSelect" class="sg-multi-select-cell">&nbsp;</th>
-        <th ng-repeat="column in simpleGrid.options.columns">{{column.$title}}</th>
+        <th ng-hide="true" ng-if="simpleGrid.options.allowMultiSelect" class="sg-multi-select-cell">&nbsp;</th>
+        <th ng-repeat="column in simpleGrid.options.columns" style="width: {{column.width}}px">{{column.$title}}</th>
         <th ng-if="simpleGrid.options.showDeleteButton" class="sg-actions-cell"></th>
     </tr>
     </thead>
 
     <tbody>
+        <tr ng-if="!data.length">
+            <td>
+                <em ng-if="!simpleGrid.dataLoaded">Loading...</em>
+                <em ng-if="simpleGrid.dataLoaded">{{simpleGrid.noDataMsg}}</em>
+            </td>
+        </tr>
+      
+        <!--ng-click="setFocusedRow(row)"-->
+        <tr ng-repeat="row in page"
+            ng-init="rowIndex = $index"
+            ng-form="{{formName($index)}}"
+            id="{{formName($index)}}"
+            ng-class="{ deleted: row.$deleted, 
+                        added: row.$added, 
+                        selected: row.$selected,
+                        focused: row.$focused, 
+                        editable: row.$editable || !simpleGrid.options.perRowEditModeEnabled,
+                        'not-editable': !row.$editable && simpleGrid.options.perRowEditModeEnabled
+                      }"
+            ng-include="'sg-row.html'">
+        </tr>
 
-    <tr ng-if="!data.length">
-        <td colspan="0"><em>No items</em></td>
-    </tr>
-    <tr ng-repeat="row in page"
-        ng-init="rowIndex = $index"
-        ng-click="setFocusedRow(row)"
-        ng-form="{{formName($index)}}"
-        id="{{formName($index)}}"
-        ng-class="{ deleted: row.$deleted, 
-                    added: row.$added, 
-                    selected: row.$selected,
-                    focused: row.$focused, 
-                    editable: row.$editable || !simpleGrid.options.perRowEditModeEnabled,
-                    'not-editable': !row.$editable && simpleGrid.options.perRowEditModeEnabled
-                  }"
-        ng-include="'sg-row.html'">
-    </tr>
+        <!-- Last Row Editable -->
+        <tr ng-init="isDummy = true" ng-class="{'alert alert-danger' : onError}"
+            ng-if="simpleGrid.options.showAddRow">
 
-    <tr class="sg-dummy-row"
-        ng-if="simpleGrid.options.perRowEditModeEnabled"
-        ng-init="isDummy = true">
-        <td ng-repeat="column in simpleGrid.options.columns"
-            ng-init="columnIndex = $index"
-            class="sg-data-cell"
-            ng-include="'sg-editable-cell.html'">
-        </td>
-        <td ng-if="simpleGrid.options.showDeleteButton || simpleGrid.options.showEditButton"
-            class="sg-actions-cell"
-            ng-include="'sg-action-buttons.html'">
-        </td>
-    </tr>
+            <td ng-hide="true" ng-if="simpleGrid.options.allowMultiSelect"></td>
+            <td ng-repeat="column in simpleGrid.options.columns track by $index"
+                ng-init="columnIndex = $index"
+                class="sg-data-cell"
+                ng-include="'sg-editable-cell.html'">
+            </td>
+            <td class="sg-actions-cell ng-scope">
+                <button type="submit"
+                        class="btn btn-sm btn-small btn-success"
+                        ng-click="toggleAdd(row)">
+                    <i class="glyphicon glyphicon-plus icon-plus"></i>
+                </button>
+            </td>
+        </tr>
+
+        <!-- Dummy Row -->
+        <tr class="sg-dummy-row"
+            ng-if="simpleGrid.options.perRowEditModeEnabled"
+            ng-init="isDummy = true">
+            <td ng-repeat="column in simpleGrid.options.columns"
+                ng-init="columnIndex = $index"
+                class="sg-data-cell"
+                ng-include="'sg-editable-cell.html'"></td>
+            <td ng-if="simpleGrid.options.showDeleteButton || simpleGrid.options.showEditButton"
+                class="sg-actions-cell"
+                ng-include="'sg-action-buttons.html'"></td>
+        </tr>
 
     </tbody>
 </table>
+
+<!-- Pagination -->
+<ul ng-if="scope.page.length > 0"
+    class="pagination pagination-sm pull-right" 
+    style="margin: -20px 10px 10px 0">
+    <li><a class="glyphicon glyphicon-menu-left" 
+           style="color:black" ng-click="movePage(-1)"></a></li>
+    <li><a class="glyphicon" style="font-family:Arial; color:black; cursor:default">
+        {{simpleGrid.options.pageNum+1}}</a></li>
+    <li><a class="glyphicon glyphicon-menu-right"
+           style="color:black" ng-click="movePage(1)"></a></li>
+</ul>
+<div style="clear: both"></div>
